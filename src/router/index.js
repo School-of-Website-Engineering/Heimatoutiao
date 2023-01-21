@@ -38,12 +38,13 @@ VueRouter.prototype.replace = function(location, resolve, reject) {
 	}
 };
 
-
-let router = new VueRouter({
+const router = new VueRouter({
 	routes,
 	scrollBehavior() {
 		return { y: 0 };
-	}
+	},
+	base: process.env.BASE_URL,
+	mode: "hash"
 });
 
 export default router;
