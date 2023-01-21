@@ -7,9 +7,6 @@ import router from "./router"
 import "./assets/scss/global.scss";
 
 
-Vue.prototype.imgUrl = "https://sc.wolfcode.cn";
-Vue.config.productionTip = false
-
 new Vue({
 	store,
 	router,
