@@ -41,7 +41,7 @@ module.exports = {
 		curly                  : ["error", "all"],
 		quotes                 : ["error", "double"],
 		indent                 : ["error", "tab"],
-		"linebreak-style"      : ["error", "windows"],
+		"linebreak-style"      : ["warn", "windows"],
 		"brace-style"          : ["error", "stroustrup", { allowSingleLine: false }],
 		"space-infix-ops"      : ["error"],
 		"comma-dangle"         : ["warn", "never"]
