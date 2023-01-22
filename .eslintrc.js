@@ -41,7 +41,6 @@ module.exports = {
 		curly                  : ["error", "all"],
 		quotes                 : ["error", "double"],
 		indent                 : ["error", "tab"],
-		"linebreak-style"      : ["warn", "windows"],
 		"brace-style"          : ["error", "stroustrup", { allowSingleLine: false }],
 		"space-infix-ops"      : ["error"],
 		"comma-dangle"         : ["warn", "never"]
@@ -68,7 +67,6 @@ key-spacing:要求在对象字面量中使用空格，并且在多行对象字�
 array-bracket-newline:要求在多行数组字面量中使用换行符。curly:要求在所有情况下使用大括号。
 quotes:要求使用双引号。
 indent:要求使用制表符进行缩进。
-linebreak-style:要求使用Windows样式的换行符。
 brace-style:要求使用Stroustrup 风格的大括号，不允许单行大括号。space-infix-ops:要求在中缀操作符两侧使用空格。
 comma-dangle:警告不要在未尾使用逗号。
 */
