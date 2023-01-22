@@ -20,7 +20,6 @@
 
 - [Vue-project-template](#vue-project-template)
   - [内容列表](#内容列表)
-  - [依赖概览](#依赖概览)
 - [Git 规范](#git-规范)
   - [Git 分支命名](#git-分支命名)
 - [Git Commit Message 格式](#git-commit-message-格式)
@@ -33,13 +32,6 @@
     - [特别感谢：](#特别感谢)
   - [使用许可](#使用许可)
   - [本地部署](#本地部署)
-
-<!-- 代码行数：![](https://img.shields.io/badge/JSON-22049-green?style=for-the-badge) -->
-
-## 依赖概览
-
-<!-- start dependencies -->
-<!-- end dependencies -->
 
 # Git 规范
 
