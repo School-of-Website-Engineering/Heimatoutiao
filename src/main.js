@@ -1,14 +1,18 @@
-import Vue from "vue"
-import App from "./App.vue"
-import store from "./store"
-import router from "./router"
+import Vue from "vue";
+import App from "./App.vue";
+import store from "./store";
+import router from "./router";
 
-//全局样式表
-import "./assets/scss/global.scss";
+//自动设置html标签字体大小
+import "amfe-flexible"
 
+import Vant from "vant";
+import "vant/lib/index.css";
+
+Vue.use(Vant);
 
 new Vue({
 	store,
 	router,
-	render: h => h(App)
-}).$mount("#app")
+	render: (h) => h(App)
+}).$mount("#app");
