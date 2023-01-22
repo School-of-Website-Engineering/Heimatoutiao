@@ -5,10 +5,12 @@ import router from "./router";
 
 //自动设置html标签字体大小
 import "amfe-flexible"
-import "./assets/scss/icon.scss"
+
 
 import Vant from "vant";
 import "vant/lib/index.css";
+
+import "./assets/scss/index.scss"
 
 Vue.use(Vant);
 
