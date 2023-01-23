@@ -33,7 +33,14 @@
 				name="code"
 			>
 				<template #button>
+					<van-count-down
+						v-if="isCountDown"
+						:time="1000 * 60"
+						format="ss秒后重试"
+            @finish="isCountDown = false"
+					/>
 					<van-button
+						v-else
 						native-type="button"
 						size="small"
 						round
@@ -78,7 +85,9 @@ export default {
 					{ required: true, message: "请输入验证码" },
 					{ pattern: /^\d{6}$/, message: "验证码不正确" }
 				]
-			}
+			},
+			//短信验证码倒计时状态
+			isCountDown: false
 		};
 	},
 	methods: {
@@ -111,7 +120,8 @@ export default {
 				//验证成功
 				await this.$refs["login-form"].validate("mobile");
 				const res = await getSendSms(this.user.mobile);
-				console.log(res);
+				//倒计时
+        this.isCountDown = true;
 			}
 			catch (error) {
 				//验证失败
@@ -160,12 +170,15 @@ export default {
 	align-items: center;
 	justify-content: center;
 }
-.login-box {
+::v-deep.login-box {
 	& > span {
 		display: block;
 		text-align: center;
 		font-size: 14px;
 		color: #666666;
+	}
+	.van-count-down{
+		font-size: 12px;
 	}
 }
 </style>
