@@ -1,18 +1,19 @@
 <template>
-	<div>
+	<div class="login-box">
 		<van-nav-bar
 			title="登录"
 			left-arrow
 			@click-left="onClickLeft($router.back())"
 		/>
 		<!-- 登录 -->
-		<van-cell-group>
+		<van-form @submit="onLogin">
 			<van-field
 				v-model="user.mobile"
 				icon-prefix="iconfont icon"
 				left-icon="shouji"
 				right-icon="warning-o"
 				placeholder="请输入手机号"
+				:rules="formRules.mobile"
 			/>
 			<van-field
 				v-model="user.code"
@@ -20,6 +21,7 @@
 				icon-prefix="iconfont icon"
 				left-icon="yanzhengma"
 				placeholder="请输入验证码"
+				:rules="formRules.code"
 			>
 				<template #button>
 					<van-button size="small" round class="send-msg"
@@ -27,12 +29,15 @@
 					</van-button>
 				</template>
 			</van-field>
-		</van-cell-group>
-		<div class="login-container">
-			<van-button class="but-login" type="info" block @click="onLogin"
-				>登录
-			</van-button>
-		</div>
+			<!-- 登录按钮 -->
+			<div class="login-container">
+				<van-button class="but-login" type="info" block @click="onLogin"
+					>登录
+				</van-button>
+			</div>
+		</van-form>
+		<span>手机号:13911111111</span>
+		<span>验证码:246810</span>
 	</div>
 </template>
 
@@ -46,6 +51,19 @@ export default {
 			user: {
 				mobile: "13911111111",
 				code  : "246810"
+			},
+			formRules: {
+				mobile: [
+					{ required: true, message: "请输入手机号" },
+					{
+						pattern: /^1[3456789]\d{9}$/,
+						message: "手机号格式不正确"
+					}
+				],
+				code: [
+					{ required: true, message: "请输入验证码" },
+					{ pattern: /^\d{6}$/, message: "验证码格式不正确" }
+				]
 			}
 		};
 	},
@@ -87,6 +105,20 @@ export default {
 
 	.van-button__text {
 		font-size: 11px;
+		color: #666666;
+	}
+}
+::v-deep .iconfont {
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.login-box {
+	& > span {
+		display: block;
+		text-align: center;
+		font-size: 14px;
 		color: #666666;
 	}
 }
