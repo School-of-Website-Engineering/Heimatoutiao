@@ -6,7 +6,14 @@
 			@click-left="onClickLeft($router.back())"
 		/>
 		<!-- 登录 -->
-		<van-form @submit="onLogin">
+		<van-form
+			@submit="onLogin"
+			:show-error="false"
+			:show-error-message="false"
+			@failed="onFailed"
+			validate-first
+			ref="login-form"
+		>
 			<van-field
 				v-model="user.mobile"
 				icon-prefix="iconfont icon"
@@ -14,6 +21,7 @@
 				right-icon="warning-o"
 				placeholder="请输入手机号"
 				:rules="formRules.mobile"
+				name="mobile"
 			/>
 			<van-field
 				v-model="user.code"
@@ -22,16 +30,22 @@
 				left-icon="yanzhengma"
 				placeholder="请输入验证码"
 				:rules="formRules.code"
+				name="code"
 			>
 				<template #button>
-					<van-button size="small" round class="send-msg"
+					<van-button
+						native-type="button"
+						size="small"
+						round
+						class="send-msg"
+						@click="onSendSms"
 						>获取验证码
 					</van-button>
 				</template>
 			</van-field>
 			<!-- 登录按钮 -->
 			<div class="login-container">
-				<van-button class="but-login" type="info" block @click="onLogin"
+				<van-button class="but-login" type="info" block
 					>登录
 				</van-button>
 			</div>
@@ -42,7 +56,7 @@
 </template>
 
 <script>
-import { getLogin } from "@/api";
+import { getLogin, getSendSms } from "@/api";
 
 export default {
 	name: "Login",
@@ -62,7 +76,7 @@ export default {
 				],
 				code: [
 					{ required: true, message: "请输入验证码" },
-					{ pattern: /^\d{6}$/, message: "验证码格式不正确" }
+					{ pattern: /^\d{6}$/, message: "验证码不正确" }
 				]
 			}
 		};
@@ -82,6 +96,38 @@ export default {
 			catch (error) {
 				console.log(error);
 				this.$toast.fail("登录失败,手机号或验证码错误");
+			}
+		},
+		onFailed(error) {
+			if (error.errors[0]) {
+				this.$toast({
+					message : error.errors[0].message,
+					position: "top"
+				});
+			}
+		},
+		async onSendSms() {
+			try {
+				//验证成功
+				await this.$refs["login-form"].validate("mobile");
+				const res = await getSendSms(this.user.mobile);
+				console.log(res);
+			}
+			catch (error) {
+				//验证失败
+				let message = "";
+				error && error.response && error.response.status === 429
+					? //发送短信失败
+					  (message = "验证码发送过于频繁,请稍后再试")
+					: error.name === "mobile"
+						? //手机号验证失败
+					  (message = error.message)
+						: (message = "出现未知错误，验证码发送失败，请稍后再试");
+
+				this.$toast({
+					message,
+					position: "top"
+				});
 			}
 		}
 	}
