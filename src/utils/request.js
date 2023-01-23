@@ -1,7 +1,3 @@
-//导入nprogress进度条
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-
 //封装axios
 import axios from "axios";
 //创建axios实例
