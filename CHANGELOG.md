@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.3...v1.0.4) (2023-01-23)
+
+
+### update
+
+* 登录注册完成 ([1ff484c](https://github.com/School-of-Website-Engineering/Heimatoutiao/commit/1ff484ccd3d164bdfd6bd783c7b108ebdc4184f3))
+
 ## [1.0.3](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.2...v1.0.3) (2023-01-23)
 
 
