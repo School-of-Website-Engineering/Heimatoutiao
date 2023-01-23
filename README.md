@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E7%BB%B4%E6%8A%A4%E4%B8%AD-brightgreen)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![](https://img.shields.io/crates/l/s)](https://img.shields.io/crates/l/s)
-![](https://img.shields.io/badge/Vue-%5E2.6.14-success)
+![](https://img.shields.io/badge/Vue-%5E2.7.14-brightgreen)
 ![](https://img.shields.io/badge/Node-%20%5E16.18.0-brightgreen)
 ![](https://img.shields.io/badge/npm-%5E8.19.2-blue)
 

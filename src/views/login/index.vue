@@ -22,7 +22,7 @@
 				placeholder="请输入手机号"
 				:rules="formRules.mobile"
 				name="mobile"
-        center
+				center
 			/>
 			<van-field
 				v-model="user.code"
@@ -32,7 +32,7 @@
 				placeholder="请输入验证码"
 				:rules="formRules.code"
 				name="code"
-        center
+				center
 			>
 				<template #button>
 					<van-count-down
@@ -67,6 +67,7 @@
 
 <script>
 import { getLogin, getSendSms } from "@/api";
+import { mapMutations } from "vuex";
 
 export default {
 	name: "Login",
@@ -74,39 +75,43 @@ export default {
 		return {
 			user: {
 				mobile: "13911111111",
-				code: "246810",
+				code  : "246810"
 			},
 			formRules: {
 				mobile: [
 					{ required: true, message: "请输入手机号" },
 					{
 						pattern: /^1[3456789]\d{9}$/,
-						message: "手机号格式不正确",
-					},
+						message: "手机号格式不正确"
+					}
 				],
 				code: [
 					{ required: true, message: "请输入验证码" },
-					{ pattern: /^\d{6}$/, message: "验证码不正确" },
-				],
+					{ pattern: /^\d{6}$/, message: "验证码不正确" }
+				]
 			},
 			//短信验证码倒计时状态
-			isCountDown: false,
+			isCountDown     : false,
 			//发送短信验证码按钮的状态
-			isSendSmsLoading: false,
+			isSendSmsLoading: false
 		};
 	},
 	methods: {
+		...mapMutations({ setUser: "token/setUser" }),
 		async onLogin() {
 			this.$toast.loading({
-				message: "加载中...",
+				message    : "加载中...",
 				forbidClick: true,
-				duration: 0,
+				duration   : 0
 			});
 			try {
 				const { data: res } = await getLogin(this.user);
 				this.$toast.success("登录成功");
 				console.log(res);
-			} catch (error) {
+				//vuex存储token
+				this.setUser(res);
+			}
+			catch (error) {
 				console.log(error);
 				this.$toast.fail("登录失败,手机号或验证码错误");
 			}
@@ -114,8 +119,8 @@ export default {
 		onFailed(error) {
 			if (error.errors[0]) {
 				this.$toast({
-					message: error.errors[0].message,
-					position: "top",
+					message : error.errors[0].message,
+					position: "top"
 				});
 			}
 		},
@@ -128,25 +133,26 @@ export default {
 				const res = await getSendSms(this.user.mobile);
 				//倒计时
 				this.isCountDown = true;
-			} catch (error) {
+			}
+			catch (error) {
 				//验证失败
 				let message = "";
 				error && error.response && error.response.status === 429
 					? //发送短信失败
 					  (message = "验证码发送过于频繁,请稍后再试")
 					: error.name === "mobile"
-					? //手机号验证失败
+						? //手机号验证失败
 					  (message = error.message)
-					: (message = "出现未知错误，验证码发送失败，请稍后再试");
+						: (message = "出现未知错误，验证码发送失败，请稍后再试");
 
 				this.$toast({
 					message,
-					position: "top",
+					position: "top"
 				});
 			}
 			this.isSendSmsLoading = false;
-		},
-	},
+		}
+	}
 };
 </script>
 
