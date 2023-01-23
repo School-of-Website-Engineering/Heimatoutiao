@@ -22,6 +22,7 @@
 				placeholder="请输入手机号"
 				:rules="formRules.mobile"
 				name="mobile"
+				center
 			/>
 			<van-field
 				v-model="user.code"
@@ -31,13 +32,14 @@
 				placeholder="请输入验证码"
 				:rules="formRules.code"
 				name="code"
+				center
 			>
 				<template #button>
 					<van-count-down
 						v-if="isCountDown"
 						:time="1000 * 60"
 						format="ss秒后重试"
-            @finish="isCountDown = false"
+						@finish="isCountDown = false"
 					/>
 					<van-button
 						v-else
@@ -46,6 +48,7 @@
 						round
 						class="send-msg"
 						@click="onSendSms"
+						:disabled="isSendSmsLoading"
 						>获取验证码
 					</van-button>
 				</template>
@@ -64,6 +67,7 @@
 
 <script>
 import { getLogin, getSendSms } from "@/api";
+import { mapMutations } from "vuex";
 
 export default {
 	name: "Login",
@@ -87,10 +91,13 @@ export default {
 				]
 			},
 			//短信验证码倒计时状态
-			isCountDown: false
+			isCountDown     : false,
+			//发送短信验证码按钮的状态
+			isSendSmsLoading: false
 		};
 	},
 	methods: {
+		...mapMutations({ setUser: "token/setUser" }),
 		async onLogin() {
 			this.$toast.loading({
 				message    : "加载中...",
@@ -101,6 +108,8 @@ export default {
 				const { data: res } = await getLogin(this.user);
 				this.$toast.success("登录成功");
 				console.log(res);
+				//vuex存储token
+				this.setUser(res);
 			}
 			catch (error) {
 				console.log(error);
@@ -119,9 +128,11 @@ export default {
 			try {
 				//验证成功
 				await this.$refs["login-form"].validate("mobile");
+				//节流
+				this.isSendSmsLoading = true;
 				const res = await getSendSms(this.user.mobile);
 				//倒计时
-        this.isCountDown = true;
+				this.isCountDown = true;
 			}
 			catch (error) {
 				//验证失败
@@ -139,6 +150,7 @@ export default {
 					position: "top"
 				});
 			}
+			this.isSendSmsLoading = false;
 		}
 	}
 };
@@ -177,7 +189,7 @@ export default {
 		font-size: 14px;
 		color: #666666;
 	}
-	.van-count-down{
+	.van-count-down {
 		font-size: 12px;
 	}
 }
