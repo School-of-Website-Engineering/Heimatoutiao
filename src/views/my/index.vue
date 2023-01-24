@@ -1,13 +1,7 @@
 <template>
 	<div class="my-container">
 		<van-cell-group class="my-info" v-if="user">
-			<van-cell
-				title="单元格"
-				value="内容"
-				center
-				class="base-info"
-				:border="false"
-			>
+			<van-cell center class="base-info" :border="false">
 				<van-image
 					class="avatar"
 					slot="icon"
@@ -15,9 +9,9 @@
 					height="50"
 					round
 					fit="cover"
-					src="https://img01.yzcdn.cn/vant/cat.jpeg"
+					:src="currentUser.photo"
 				/>
-				<div slot="title" class="nickname">昵称</div>
+				<div slot="title" class="nickname">{{ currentUser.name }}</div>
 				<van-button size="small" round class="update-btn"
 					>编辑资料</van-button
 				>
@@ -25,25 +19,25 @@
 			<van-grid :border="false" class="data-info">
 				<van-grid-item class="data-info-item">
 					<div slot="text" class="text-wrap">
-						<div class="count">12</div>
+						<div class="count">{{ currentUser.art_count }}</div>
 						<div class="text">头条</div>
 					</div>
 				</van-grid-item>
 				<van-grid-item class="data-info-item">
 					<div slot="text" class="text-wrap">
-						<div class="count">12</div>
+						<div class="count">{{ currentUser.follow }}</div>
 						<div class="text">关注</div>
 					</div>
 				</van-grid-item>
 				<van-grid-item class="data-info-item">
 					<div slot="text" class="text-wrap">
-						<div class="count">0</div>
+						<div class="count">{{ currentUser.fans_count }}</div>
 						<div class="text">粉丝</div>
 					</div>
 				</van-grid-item>
 				<van-grid-item class="data-info-item">
 					<div slot="text" class="text-wrap">
-						<div class="count">1</div>
+						<div class="count">{{ currentUser.like_count }}</div>
 						<div class="text">获赞</div>
 					</div>
 				</van-grid-item>
@@ -77,11 +71,18 @@
 
 <script>
 import { mapState } from "vuex";
+import { getUserInfo } from "@/api";
 
 export default {
 	name: "My",
 	data() {
-		return {};
+		return {
+			//用户信息
+			currentUser: {}
+		};
+	},
+	created() {
+		this.loadUserInfo();
 	},
 	computed: { ...mapState({ user: (state) => state.token.user }) },
 	methods : {
@@ -98,6 +99,11 @@ export default {
 				.catch(() => {
 					// on cancel
 				});
+		},
+		async loadUserInfo() {
+			const { data } = await getUserInfo();
+			this.currentUser = data;
+			console.log(data);
 		}
 	}
 };
