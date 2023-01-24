@@ -49,18 +49,37 @@
 				</van-grid-item>
 			</van-grid>
 		</van-cell-group>
-		<van-grid :column-num="2">
-			<van-grid-item icon="star-o" text="收藏" />
-			<van-grid-item icon="browsing-history-o" text="历史" />
+		<van-grid :column-num="2" class="nav-grid mb-4">
+			<van-grid-item icon="star-o" text="收藏" class="nav-grid-item" />
+			<van-grid-item
+				icon="browsing-history-o"
+				text="历史"
+				class="nav-grid-item"
+			/>
 		</van-grid>
 		<van-cell title="消息通知" is-link to="/" />
-		<van-cell title="小智同学" is-link to="/" />
-		<van-cell title="退出登录" />
+		<van-cell title="小智同学" is-link to="/" class="mb-4" />
+		<van-cell title="退出登录" class="loginout" v-if="user" />
+		<div class="not-login" v-else>
+			<!-- 未登录显示 -->
+			<div @click="$router.push('/login')">
+				<img src="./images/unlogin-img.png" alt="" class="mobile" />
+			</div>
+			<div class="text" @click="$router.push('/login')">登录 / 注册</div>
+		</div>
 	</div>
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+
+export default {
+	name: "My",
+	data() {
+		return {};
+	},
+	computed: { ...mapState({ user: (state) => state.token.user }) }
+};
 </script>
 
 <style scoped lang="scss">
@@ -93,13 +112,13 @@ export default {};
 		.data-info-item {
 			height: 65px;
 			color: #fff;
-      .text-wrap {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-      }
+			.text-wrap {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 100%;
+			}
 			.count {
 				font-size: 18px;
 			}
@@ -109,9 +128,51 @@ export default {};
 		}
 	}
 }
-::v-deep.van-grid-item {
+::v-deep .van-grid-item {
 	.van-grid-item__content {
 		background-color: unset;
+	}
+	.van-icon-star-o {
+		color: #eb5253;
+		font-size: 22px;
+	}
+	.van-icon-browsing-history-o {
+		color: #ff9d1d;
+		font-size: 22px;
+	}
+}
+.nav-grid {
+	background-color: #fff;
+	.nav-grid-item {
+		height: 70px;
+	}
+}
+.loginout {
+	text-align: center;
+	color: #d86262;
+}
+.mb-4 {
+	margin-bottom: 4px;
+}
+.my-container {
+	//未登录
+	.not-login {
+		height: 180px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: url("./images/banner.png") no-repeat;
+		background-size: 100% 100%;
+		.mobile {
+			width: 66px;
+			height: 66px;
+		}
+		.text {
+			margin-top: 10px;
+			font-size: 14px;
+			color: #fff;
+		}
 	}
 }
 </style>

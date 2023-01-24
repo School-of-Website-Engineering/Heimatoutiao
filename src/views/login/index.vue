@@ -110,6 +110,8 @@ export default {
 				console.log(res);
 				//vuex存储token
 				this.setUser(res);
+				//跳转到
+				await this.$router.push("/my");
 			}
 			catch (error) {
 				console.log(error);
