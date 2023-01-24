@@ -1,6 +1,6 @@
 <template>
 	<div class="my-container">
-		<van-cell-group class="my-info">
+		<van-cell-group class="my-info" v-if="user">
 			<van-cell
 				title="单元格"
 				value="内容"
@@ -49,6 +49,13 @@
 				</van-grid-item>
 			</van-grid>
 		</van-cell-group>
+		<div class="not-login" v-else>
+			<!-- 未登录显示 -->
+			<div @click="$router.push('/login')">
+				<img src="./images/unlogin-img.png" alt="" class="mobile" />
+			</div>
+			<div class="text" @click="$router.push('/login')">登录 / 注册</div>
+		</div>
 		<van-grid :column-num="2" class="nav-grid mb-4">
 			<van-grid-item icon="star-o" text="收藏" class="nav-grid-item" />
 			<van-grid-item
@@ -59,14 +66,12 @@
 		</van-grid>
 		<van-cell title="消息通知" is-link to="/" />
 		<van-cell title="小智同学" is-link to="/" class="mb-4" />
-		<van-cell title="退出登录" class="loginout" v-if="user" />
-		<div class="not-login" v-else>
-			<!-- 未登录显示 -->
-			<div @click="$router.push('/login')">
-				<img src="./images/unlogin-img.png" alt="" class="mobile" />
-			</div>
-			<div class="text" @click="$router.push('/login')">登录 / 注册</div>
-		</div>
+		<van-cell
+			title="退出登录"
+			class="loginout"
+			@click="onLoginOut"
+			v-if="user"
+		/>
 	</div>
 </template>
 
@@ -78,7 +83,23 @@ export default {
 	data() {
 		return {};
 	},
-	computed: { ...mapState({ user: (state) => state.token.user }) }
+	computed: { ...mapState({ user: (state) => state.token.user }) },
+	methods : {
+		onLoginOut() {
+			this.$dialog
+				.confirm({
+					title  : "提示",
+					message: "确认退出登录吗？"
+				})
+				.then(() => {
+					//清除token
+					this.$store.commit("token/setUser", null);
+				})
+				.catch(() => {
+					// on cancel
+				});
+		}
+	}
 };
 </script>
 
