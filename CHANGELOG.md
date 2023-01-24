@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.4...v1.0.5) (2023-01-24)
+
+
+### update
+
+* 更新"我的界面" ([1fa7dc0](https://github.com/School-of-Website-Engineering/Heimatoutiao/commit/1fa7dc09ca1fd4f4479118382b0c1574ac21ed3f))
+
 ## [1.0.4](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.3...v1.0.4) (2023-01-23)
 
 
