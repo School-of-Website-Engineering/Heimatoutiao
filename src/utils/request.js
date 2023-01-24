@@ -1,5 +1,6 @@
 //封装axios
 import axios from "axios";
+import store from "@/store";
 //创建axios实例
 const request = axios.create({
 	baseURL: "http://api-toutiao-web.itheima.net",
@@ -10,10 +11,10 @@ const request = axios.create({
 request.interceptors.request.use(
 	(config) => {
 		//有没有token
-		// const token = sessionStorage.getItem("token");
-		// if (token) {
-		// 	config.headers["x-auth-token"] = token;
-		// }
+		const token = store.state.token.user.token;
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
 		return config;
 	},
 	(error) => {
