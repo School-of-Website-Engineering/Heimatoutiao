@@ -9,6 +9,7 @@
 				:border="false"
 			>
 				<van-image
+					class="avatar"
 					slot="icon"
 					width="50"
 					height="50"
@@ -16,31 +17,33 @@
 					fit="cover"
 					src="https://img01.yzcdn.cn/vant/cat.jpeg"
 				/>
-				<div slot="title">昵称</div>
-				<van-button size="small" round>编辑资料</van-button>
+				<div slot="title" class="nickname">昵称</div>
+				<van-button size="small" round class="update-btn"
+					>编辑资料</van-button
+				>
 			</van-cell>
-			<van-grid :border="false">
-				<van-grid-item>
-					<div slot="text">
-						<div class="span">12</div>
+			<van-grid :border="false" class="data-info">
+				<van-grid-item class="data-info-item">
+					<div slot="text" class="text-wrap">
+						<div class="count">12</div>
 						<div class="text">头条</div>
 					</div>
 				</van-grid-item>
-				<van-grid-item>
-					<div slot="text">
-						<div class="span">12</div>
+				<van-grid-item class="data-info-item">
+					<div slot="text" class="text-wrap">
+						<div class="count">12</div>
 						<div class="text">关注</div>
 					</div>
 				</van-grid-item>
-				<van-grid-item>
-					<div slot="text">
-						<div class="span">0</div>
+				<van-grid-item class="data-info-item">
+					<div slot="text" class="text-wrap">
+						<div class="count">0</div>
 						<div class="text">粉丝</div>
 					</div>
 				</van-grid-item>
-				<van-grid-item>
-					<div slot="text">
-						<div class="span">1</div>
+				<van-grid-item class="data-info-item">
+					<div slot="text" class="text-wrap">
+						<div class="count">1</div>
 						<div class="text">获赞</div>
 					</div>
 				</van-grid-item>
@@ -63,8 +66,47 @@ export default {};
 <style scoped lang="scss">
 .my-info {
 	background: url(./images/banner.png) no-repeat;
+	background-size: 100% 100%;
 	.base-info {
 		background-color: unset;
+		height: 115px;
+		box-sizing: border-box;
+		padding: 38px 11px 11px;
+		.avatar {
+			width: 66px;
+			height: 66px;
+			border: 1px solid #fff;
+			box-sizing: border-box;
+			margin-right: 11px;
+		}
+		.nickname {
+			font-size: 15px;
+			color: #fff;
+		}
+		.update-btn {
+			height: 20px;
+			font-size: 10px;
+			color: #666;
+		}
+	}
+	.data-info {
+		.data-info-item {
+			height: 65px;
+			color: #fff;
+      .text-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+			.count {
+				font-size: 18px;
+			}
+			.text {
+				font-size: 11px;
+			}
+		}
 	}
 }
 ::v-deep.van-grid-item {
