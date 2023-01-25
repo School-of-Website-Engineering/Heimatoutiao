@@ -94,7 +94,7 @@ export default {
 				})
 				.then(() => {
 					//清除token
-					this.$store.commit("token/setUser", null);
+					this.$store.commit("token/setUser", "");
 				})
 				.catch(() => {
 					// on cancel
