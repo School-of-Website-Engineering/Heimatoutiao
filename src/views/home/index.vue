@@ -12,13 +12,10 @@
 			>
 		</van-nav-bar>
 		<!-- 文章频道列表 -->
-		<van-tabs v-model="active" animated>
-			<van-tab
-				v-for="item in channels"
-				:title="item.name"
-				:key="item.id"
-			>
-        {{ item.name }}
+		<van-tabs v-model="active" animated  class="tbs-box">
+			<van-tab class="tab-btn" v-for="item in channels" :title="item.name" :key="item.id">
+				<!-- 文章列表 -->
+				<articleList :channels="channels" />
 			</van-tab>
 		</van-tabs>
 	</div>
@@ -26,14 +23,16 @@
 
 <script>
 import { getUserChannels } from "@/api";
+import ArticleList from "./components/article-list.vue";
 export default {
-	name: "Home",
+	name      : "Home",
+	components: { ArticleList },
 	data() {
 		return {
 			// 当前选中的频道
-			active: 0,
+			active  : 0,
 			// 频道列表
-			channels: [],
+			channels: []
 		};
 	},
 	created() {
@@ -42,11 +41,17 @@ export default {
 	methods: {
 		// 加载频道列表
 		async loadChannels() {
-			const { data } = await getUserChannels();
-			this.channels = data.channels;
-			console.log(this.channels.name);
-		},
-	},
+			try {
+				const { data } = await getUserChannels();
+				this.channels = data.channels;
+				console.log(this.channels);
+			}
+			catch (error) {
+				this.$toast.fail(error.response.data.message);
+				console.log(error);
+			}
+		}
+	}
 };
 </script>
 
@@ -69,5 +74,22 @@ export default {
 			}
 		}
 	}
+}
+::v-deep.tbs-box{
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  height: 570px;
+  width: 100%;
+  overflow-y: auto;
+}
+::v-deep .van-tabs--line .van-tabs__wrap{
+  position: fixed;
+  top: 45px;
+  z-index:999
+}
+::v-deep .van-tabs__content{
+  margin-top: 40px;
 }
 </style>
