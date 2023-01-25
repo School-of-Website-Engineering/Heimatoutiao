@@ -194,5 +194,8 @@ export default {
 	.van-count-down {
 		font-size: 12px;
 	}
+  .van-nav-bar .van-icon{
+    color: #fff;
+  }
 }
 </style>
