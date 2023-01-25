@@ -12,10 +12,15 @@
 			>
 		</van-nav-bar>
 		<!-- 文章频道列表 -->
-		<van-tabs v-model="active" animated  class="tbs-box">
-			<van-tab class="tab-btn" v-for="item in channels" :title="item.name" :key="item.id">
+		<van-tabs v-model="active" animated class="tbs-box">
+			<van-tab
+				class="tab-btn"
+				v-for="item in channels"
+				:title="item.name"
+				:key="item.id"
+			>
 				<!-- 文章列表 -->
-				<articleList :channels="channels" />
+				<articleList :channels="channels" :active="active" />
 			</van-tab>
 		</van-tabs>
 	</div>
@@ -75,21 +80,21 @@ export default {
 		}
 	}
 }
-::v-deep.tbs-box{
-  position: fixed;
-  top: 50px;
-  left: 0;
-  right: 0;
-  height: 570px;
-  width: 100%;
-  overflow-y: auto;
+::v-deep.tbs-box {
+	position: fixed;
+	top: 50px;
+	left: 0;
+	right: 0;
+	height: 570px;
+	width: 100%;
+	overflow-y: auto;
 }
-::v-deep .van-tabs--line .van-tabs__wrap{
-  position: fixed;
-  top: 45px;
-  z-index:999
+::v-deep .van-tabs--line .van-tabs__wrap {
+	position: fixed;
+	top: 45px;
+	z-index: 999;
 }
-::v-deep .van-tabs__content{
-  margin-top: 40px;
+::v-deep .van-tabs__content {
+	margin-top: 40px;
 }
 </style>
