@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.5...v1.0.6) (2023-01-25)
+
+
+### update
+
+* 更新首页布局 ([4655e4f](https://github.com/School-of-Website-Engineering/Heimatoutiao/commit/4655e4f73f26de5914aad4aed6b2ab4d8ad0f472))
+
 ## [1.0.5](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.0.4...v1.0.5) (2023-01-24)
 
 
