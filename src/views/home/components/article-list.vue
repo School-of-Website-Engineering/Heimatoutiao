@@ -4,7 +4,7 @@
 			v-model="isRefresh"
 			@refresh="onRefresh"
 			:success-text="refreshSuccessText"
-      :success-duration="1200"
+			:success-duration="1200"
 		>
 			<van-list
 				v-model="loading"
@@ -12,11 +12,11 @@
 				finished-text="没有更多了"
 				@load="onLoad"
 			>
-				<van-cell
-					v-for="item in articles"
-					:key="item.id"
-					:title="item.title"
-				/>
+				<article-item
+          v-for="(item,index) in articles"
+					:key="index"
+					:article="item"
+				></article-item>
 			</van-list>
 		</van-pull-refresh>
 	</div>
@@ -24,10 +24,12 @@
 
 <script>
 import { getArticles } from "@/api";
+import ArticleItem from "@/components/article-item/index.vue";
 
 export default {
-	name : "ArticleList",
-	props: {
+	name      : "ArticleList",
+	components: { ArticleItem },
+	props     : {
 		channels: {
 			type    : Array,
 			required: true
