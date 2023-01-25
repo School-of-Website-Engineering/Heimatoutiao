@@ -11,11 +11,43 @@
 				>搜索</van-button
 			>
 		</van-nav-bar>
+		<!-- 文章频道列表 -->
+		<van-tabs v-model="active" animated>
+			<van-tab
+				v-for="item in channels"
+				:title="item.name"
+				:key="item.id"
+			>
+        {{ item.name }}
+			</van-tab>
+		</van-tabs>
 	</div>
 </template>
 
 <script>
-export default {};
+import { getUserChannels } from "@/api";
+export default {
+	name: "Home",
+	data() {
+		return {
+			// 当前选中的频道
+			active: 0,
+			// 频道列表
+			channels: [],
+		};
+	},
+	created() {
+		this.loadChannels();
+	},
+	methods: {
+		// 加载频道列表
+		async loadChannels() {
+			const { data } = await getUserChannels();
+			this.channels = data.channels;
+			console.log(this.channels.name);
+		},
+	},
+};
 </script>
 
 <style scoped lang="scss">
@@ -30,11 +62,11 @@ export default {};
 			background-color: #5babfb;
 			font-size: 14px;
 			color: #ffffff;
-      border: none;
-      .van-icon-search{
-        color: #ffffff;
-        font-size: 16px;
-      }
+			border: none;
+			.van-icon-search {
+				color: #ffffff;
+				font-size: 16px;
+			}
 		}
 	}
 }

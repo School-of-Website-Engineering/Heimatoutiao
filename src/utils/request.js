@@ -16,7 +16,6 @@ request.interceptors.request.use(
 		if (token && isLoginToken) {
 			config.headers.Authorization = `Bearer ${isLoginToken}`;
 		}
-		console.log(token);
 		return config;
 	},
 	(error) => {
