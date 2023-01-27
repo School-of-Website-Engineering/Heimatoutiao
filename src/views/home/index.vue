@@ -8,11 +8,11 @@
 				class="search-btn"
 				round
 				size="small"
-				>搜索</van-button
-			>
+				>搜索
+			</van-button>
 		</van-nav-bar>
 		<!-- 文章频道列表 -->
-		<van-tabs v-model="active" animated class="tbs-box">
+		<van-tabs v-model="active" class="tbs-box">
 			<van-tab
 				class="tab-btn"
 				v-for="item in channels"
@@ -22,22 +22,39 @@
 				<!-- 文章列表 -->
 				<articleList :channels="channels" :active="active" />
 			</van-tab>
+			<div
+				class="right-nav"
+				slot="nav-right"
+				@click="isChannelEditShow = true"
+			>
+				<van-icon name="wap-nav" />
+			</div>
 		</van-tabs>
+		<van-popup
+			v-model="isChannelEditShow"
+			position="bottom"
+			class="popup-isChannelEditShow"
+			closeable
+			get-container="body"
+		/>
 	</div>
 </template>
 
 <script>
 import { getUserChannels } from "@/api";
 import ArticleList from "./components/article-list.vue";
+
 export default {
-	name      : "Home",
+	name: "Home",
 	components: { ArticleList },
 	data() {
 		return {
 			// 当前选中的频道
-			active  : 0,
+			active: 0,
 			// 频道列表
-			channels: []
+			channels: [],
+			// 是否显示频道编辑弹窗
+			isChannelEditShow: false,
 		};
 	},
 	created() {
@@ -50,13 +67,12 @@ export default {
 				const { data } = await getUserChannels();
 				this.channels = data.channels;
 				console.log(this.channels);
-			}
-			catch (error) {
+			} catch (error) {
 				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
-				console.log(error.response.data.message);
+					console.log(error.response.data.message);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -65,6 +81,7 @@ export default {
 	::v-deep .van-nav-bar__title {
 		max-width: unset;
 	}
+
 	.app-nav-bar {
 		.search-btn {
 			width: 277px;
@@ -73,6 +90,7 @@ export default {
 			font-size: 14px;
 			color: #ffffff;
 			border: none;
+
 			.van-icon-search {
 				color: #ffffff;
 				font-size: 16px;
@@ -80,6 +98,7 @@ export default {
 		}
 	}
 }
+
 ::v-deep.tbs-box {
 	position: fixed;
 	top: 50px;
@@ -89,22 +108,46 @@ export default {
 	width: 100%;
 	overflow-y: auto;
 }
+
 ::v-deep .van-tabs--line .van-tabs__wrap {
-	position: fixed;
-	top: 45px;
+	position: sticky;
+	top: 0;
 	z-index: 999;
 }
-::v-deep .van-tabs__content {
-	margin-top: 40px;
-}
+
 ::v-deep .van-tab {
 	border-right: 1px solid #edeff3;
 	border-bottom: 1px solid #edeff3;
 	padding: 0 20px 0 20px;
 }
+
 ::v-deep .van-tabs__line {
 	background-color: #3296fa !important;
 	width: 18px !important;
 	height: 3px !important;
 }
+
+.popup-isChannelEditShow {
+	height: 100%;
+}
+
+.right-nav {
+	position: fixed;
+	top: 45px;
+	right: -10px;
+	width: 43px;
+	line-height: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(#fff, 0.9);
+	border-left: 1px solid #edeff3;
+	z-index: 999;
+
+	.van-icon {
+		font-size: 24px;
+	}
+}
+
 </style>
