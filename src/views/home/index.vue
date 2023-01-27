@@ -52,8 +52,8 @@ export default {
 				console.log(this.channels);
 			}
 			catch (error) {
-				this.$toast.fail(error.response.data.message);
-				console.log(error);
+				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
+				console.log(error.response.data.message);
 			}
 		}
 	}
@@ -96,5 +96,15 @@ export default {
 }
 ::v-deep .van-tabs__content {
 	margin-top: 40px;
+}
+::v-deep .van-tab {
+	border-right: 1px solid #edeff3;
+	border-bottom: 1px solid #edeff3;
+	padding: 0 20px 0 20px;
+}
+::v-deep .van-tabs__line {
+	background-color: #3296fa !important;
+	width: 18px !important;
+	height: 3px !important;
 }
 </style>
