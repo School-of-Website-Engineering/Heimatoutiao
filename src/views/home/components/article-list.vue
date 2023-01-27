@@ -56,7 +56,6 @@ export default {
 		};
 	},
 	methods: {
-		//检测articles中的cover的type值,type值为0，随机将其替换为1、2、3，根据type的数值将cove中的images数组中的元素依次添加"https://img01.yzcdn.cn/vant/cat.jpeg"
 		// 1. 为1时，显示一张图片
 		// 2. 为2时，显示一张图片
 		// 3. 为3时，显示三张图片
@@ -101,12 +100,10 @@ export default {
 				else {
 					this.finished = true;
 				}
-				console.log(data);
 			}
 			catch (e) {
 				this.$toast.fail(e.message);
 			}
-			console.log(this.articles);
 		},
 		async onRefresh() {
 			try {

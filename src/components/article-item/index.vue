@@ -18,7 +18,7 @@
 			<div class="label-wrapper">
 				<span>{{ article.aut_name }}</span>
 				<span>{{ article.comm_count }}评论</span>
-				<span>{{ article.pubdate }}</span>
+				<span>{{ article.pubdate | relativeTime }}</span>
 			</div>
 		</div>
 		<!-- 单封面情况 -->
@@ -74,6 +74,13 @@ export default {
 				width: 100%;
 				height: 73px;
 			}
+		}
+	}
+	.label-wrapper {
+		span {
+			margin-right: 12px;
+			color: #b3b3b3;
+			font-size: 11px;
 		}
 	}
 }
