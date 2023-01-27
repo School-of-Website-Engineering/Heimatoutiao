@@ -30,31 +30,35 @@
 				<van-icon name="wap-nav" />
 			</div>
 		</van-tabs>
+		<!-- 频道编辑 -->
 		<van-popup
 			v-model="isChannelEditShow"
 			position="bottom"
 			class="popup-isChannelEditShow"
 			closeable
 			get-container="body"
-		/>
+		>
+			<channel-edit></channel-edit>
+		</van-popup>
 	</div>
 </template>
 
 <script>
 import { getUserChannels } from "@/api";
 import ArticleList from "./components/article-list.vue";
+import ChannelEdit from "@/views/home/components/channel-edit.vue";
 
 export default {
-	name: "Home",
-	components: { ArticleList },
+	name      : "Home",
+	components: { ChannelEdit, ArticleList },
 	data() {
 		return {
 			// 当前选中的频道
-			active: 0,
+			active           : 0,
 			// 频道列表
-			channels: [],
+			channels         : [],
 			// 是否显示频道编辑弹窗
-			isChannelEditShow: false,
+			isChannelEditShow: true
 		};
 	},
 	created() {
@@ -67,12 +71,13 @@ export default {
 				const { data } = await getUserChannels();
 				this.channels = data.channels;
 				console.log(this.channels);
-			} catch (error) {
-				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
-					console.log(error.response.data.message);
 			}
-		},
-	},
+			catch (error) {
+				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
+				console.log(error.response.data.message);
+			}
+		}
+	}
 };
 </script>
 
@@ -149,5 +154,4 @@ export default {
 		font-size: 24px;
 	}
 }
-
 </style>
