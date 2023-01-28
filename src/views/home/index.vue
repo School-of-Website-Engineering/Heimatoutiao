@@ -38,7 +38,7 @@
 			closeable
 			get-container="body"
 		>
-			<channel-edit></channel-edit>
+			<channel-edit :user-channels="channels"></channel-edit>
 		</van-popup>
 	</div>
 </template>

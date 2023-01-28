@@ -1,16 +1,17 @@
 <template>
   <div class="channel-edit">
-    频道编辑
     <van-cell slot="title" center :border="false">
       <div slot="title" class="channel-title">我的频道</div>
-      <van-button type="danger" size="small" round plain>保存</van-button>
+      <van-button type="danger" size="mini" round plain style="width: 58px"
+        >编辑
+      </van-button>
     </van-cell>
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
-        v-for="value in 8"
-        :key="value"
-        text="文字"
+        v-for="(channels, index) in userChannels"
+        :key="index"
+        :text="channels.name"
       />
     </van-grid>
     <van-cell slot="title" center :border="false">
@@ -28,7 +29,34 @@
 </template>
 
 <script>
-export default { name: "ChannelEdit" };
+import { getAllChannels } from "@/api";
+
+export default {
+	name : "ChannelEdit",
+	props: {
+		userChannels: {
+			type    : Array,
+			required: true
+		}
+	},
+	data() {
+		return {
+			//所有频道
+			allChannels: []
+		};
+	},
+	created() {
+		this.loadAllChannels();
+	},
+	methods: {
+		// 获取所有频道
+		async loadAllChannels() {
+			const {data} = await getAllChannels();
+			console.log(data);
+      this.allChannels = data.channels;
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>
