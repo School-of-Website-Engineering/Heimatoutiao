@@ -16,10 +16,11 @@
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
-        :icon="isEdit ? 'close' : ''"
+        :icon="isEdit && index !== 0 ? 'close' : ''"
         v-for="(channels, index) in userChannels"
         :key="index"
         :text="channels.name"
+        @click="onUserChannelClick(index)"
       />
     </van-grid>
     <van-cell slot="title" center :border="false">
@@ -71,7 +72,24 @@ export default {
 			// eslint-disable-next-line vue/no-mutating-props
 			this.userChannels.push(channel);
 			//TODO: 保存到本地
-		}
+		},
+		onUserChannelClick(index) {
+			if (this.isEdit && index !== 0) {
+				//删除频道
+				this.deleteChannel(index);
+			}
+			else {
+				//切换频道
+				this.switchChannel(index);
+			}
+		},
+		// 删除频道
+		deleteChannel(index) {
+			// eslint-disable-next-line vue/no-mutating-props
+			this.userChannels.splice(index, 1);
+		},
+		//切换频道
+		switchChannel(index) {}
 	},
 	computed: {
 		// 推荐频道
@@ -114,7 +132,7 @@ export default {
       .van-grid-item__text {
         font-size: 13px;
         color: #222;
-        margin-top:0px;
+        margin-top: 0px;
       }
     }
   }
