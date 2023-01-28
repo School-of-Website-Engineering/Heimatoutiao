@@ -7,9 +7,9 @@
     </van-cell>
     <van-grid :gutter="10">
       <van-grid-item
+        class="grid-item"
         v-for="value in 8"
         :key="value"
-        icon="photo-o"
         text="文字"
       />
     </van-grid>
@@ -18,9 +18,9 @@
     </van-cell>
     <van-grid :gutter="10">
       <van-grid-item
-        v-for="value in 8"
+        class="grid-item"
+        v-for="value in 58"
         :key="value"
-        icon="photo-o"
         text="文字"
       />
     </van-grid>
@@ -34,5 +34,24 @@ export default { name: "ChannelEdit" };
 <style lang="scss" scoped>
 .channel-edit {
   margin-top: 54px;
+
+  .channel-title {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .grid-item {
+    height: 43px;
+    width: 80px;
+
+    .van-grid-item__content {
+      background-color: #f4f5f6;
+
+      .van-grid-item__text {
+        font-size: 14px;
+        color: #222;
+      }
+    }
+  }
 }
 </style>
