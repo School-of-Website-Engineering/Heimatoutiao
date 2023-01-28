@@ -2,13 +2,21 @@
   <div class="channel-edit">
     <van-cell slot="title" center :border="false">
       <div slot="title" class="channel-title">我的频道</div>
-      <van-button type="danger" size="mini" round plain style="width: 58px"
-        >编辑
+      <van-button
+        type="danger"
+        size="mini"
+        round
+        plain
+        style="width: 58px"
+        @click="isEdit = !isEdit"
+      >
+        {{ isEdit ? "完成" : "编辑" }}
       </van-button>
     </van-cell>
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
+        :icon="isEdit ? 'close' : ''"
         v-for="(channels, index) in userChannels"
         :key="index"
         :text="channels.name"
@@ -20,9 +28,10 @@
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
-        v-for="value in 58"
-        :key="value"
-        text="文字"
+        v-for="(allChannels, index) in recommendChannels"
+        :key="index"
+        :text="allChannels.name"
+        @click="addChannel(allChannels)"
       />
     </van-grid>
   </div>
@@ -42,7 +51,9 @@ export default {
 	data() {
 		return {
 			//所有频道
-			allChannels: []
+			allChannels: [],
+			//编辑状态
+			isEdit     : false
 		};
 	},
 	created() {
@@ -51,9 +62,24 @@ export default {
 	methods: {
 		// 获取所有频道
 		async loadAllChannels() {
-			const {data} = await getAllChannels();
+			const { data } = await getAllChannels();
 			console.log(data);
-      this.allChannels = data.channels;
+			this.allChannels = data.channels;
+		},
+		// 添加频道
+		addChannel(channel) {
+			// eslint-disable-next-line vue/no-mutating-props
+			this.userChannels.push(channel);
+			//TODO: 保存到本地
+		}
+	},
+	computed: {
+		// 推荐频道
+		recommendChannels() {
+			//1.先把我的频道的id取出来
+			const myChannelsId = this.userChannels.map((item) => item.id);
+			//2.过滤掉我的频道
+			return this.allChannels.filter((item) => !myChannelsId.includes(item.id));
 		}
 	}
 };
@@ -72,12 +98,23 @@ export default {
     height: 43px;
     width: 80px;
 
-    .van-grid-item__content {
+    ::v-deep .van-grid-item__content {
+      position: relative;
+
+      .van-grid-item__icon {
+        position: absolute;
+        top: -5px;
+        right: -6px;
+        font-size: 18px;
+        color: #d83b01;
+      }
+
       background-color: #f4f5f6;
 
       .van-grid-item__text {
-        font-size: 14px;
+        font-size: 13px;
         color: #222;
+        margin-top:0px;
       }
     }
   }
