@@ -92,6 +92,11 @@ export default {
 		deleteChannel(index) {
 			// eslint-disable-next-line vue/no-mutating-props
 			this.userChannels.splice(index, 1);
+			//如果删除的是当前激活频道之前的频道
+			if (index <= this.active) {
+				//激活频道索引-1
+				this.$emit("switchChannel", this.active - 1);
+			}
 		},
 		//切换频道
 		switchChannel(index) {
