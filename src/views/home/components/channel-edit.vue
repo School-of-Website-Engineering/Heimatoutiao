@@ -89,7 +89,11 @@ export default {
 			this.userChannels.splice(index, 1);
 		},
 		//切换频道
-		switchChannel(index) {}
+		switchChannel(index) {
+			//关闭弹出层，切换频道
+			this.$emit("switchChannel",index);
+			this.$emit("close");
+		}
 	},
 	computed: {
 		// 推荐频道
