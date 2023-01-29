@@ -48,6 +48,8 @@
 import { getUserChannels } from "@/api";
 import ArticleList from "./components/article-list.vue";
 import ChannelEdit from "@/views/home/components/channel-edit.vue";
+import { mapState } from "vuex";
+import { getItem } from "@/utils/storage";
 
 export default {
 	name      : "Home",
@@ -69,16 +71,30 @@ export default {
 		// 加载频道列表
 		async loadChannels() {
 			try {
-				const { data } = await getUserChannels();
-				this.channels = data.channels;
-				console.log(this.channels);
+				let channels = [];
+				if (this.user) {
+					const { data } = await getUserChannels();
+					channels = data.channels;
+				}
+				else {
+					const localeChannels = getItem("userChannels");
+					if (localeChannels) {
+						channels = localeChannels;
+					}
+					else {
+						const { data } = await getUserChannels();
+						channels = data.channels;
+					}
+				}
+				this.channels = channels;
 			}
 			catch (error) {
 				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
 				console.log(error.response.data.message);
 			}
 		}
-	}
+	},
+	computed: { ...mapState({ user: (state) => state.token.user }) }
 };
 </script>
 
