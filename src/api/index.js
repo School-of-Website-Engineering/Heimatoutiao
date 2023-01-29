@@ -57,3 +57,11 @@ export const addUserChannels = (data) => {
 		data
 	});
 }
+
+//删除用户频道
+export const deleteUserChannels = (channelId) => {
+	return request({
+		method: "DELETE",
+		url   : `/app/v1_0/user/channels/${channelId}`
+	});
+}
