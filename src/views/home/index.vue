@@ -38,6 +38,7 @@
         @close="isChannelEditShow = false"
         @switchChannel="active = $event"
         :user-channels="channels"
+        :active="active"
       ></channel-edit>
     </van-popup>
   </div>
@@ -76,7 +77,7 @@ export default {
 				this.$toast.fail("用户登录信息已过期请退出登录后重新登录"),
 				console.log(error.response.data.message);
 			}
-		},
+		}
 	}
 };
 </script>

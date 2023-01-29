@@ -16,6 +16,7 @@
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
+        :class="{ active: index === active }"
         :icon="isEdit && index !== 0 ? 'close' : ''"
         v-for="(channels, index) in userChannels"
         :key="index"
@@ -46,6 +47,10 @@ export default {
 	props: {
 		userChannels: {
 			type    : Array,
+			required: true
+		},
+		active: {
+			type    : Number,
 			required: true
 		}
 	},
@@ -91,7 +96,7 @@ export default {
 		//切换频道
 		switchChannel(index) {
 			//关闭弹出层，切换频道
-			this.$emit("switchChannel",index);
+			this.$emit("switchChannel", index);
 			this.$emit("close");
 		}
 	},
@@ -135,10 +140,13 @@ export default {
 
       .van-grid-item__text {
         font-size: 13px;
-        color: #222;
         margin-top: 0px;
+        color: unset;
       }
     }
+  }
+  ::v-deep .active {
+    color: #d83b01 !important;
   }
 }
 </style>
