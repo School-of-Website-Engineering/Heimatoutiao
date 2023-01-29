@@ -115,7 +115,7 @@ export default {
 			}
 			catch (error) {
 				console.log(error);
-				this.$toast.fail("登录失败,手机号或验证码错误");
+				this.$toast.fail(error.message);
 			}
 		},
 		onFailed(error) {
