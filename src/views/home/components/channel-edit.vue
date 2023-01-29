@@ -40,7 +40,9 @@
 </template>
 
 <script>
-import { getAllChannels } from "@/api";
+import { addUserChannels, getAllChannels } from "@/api";
+import { mapState } from "vuex";
+import { setItem } from "@/utils/storage";
 
 export default {
 	name : "ChannelEdit",
@@ -73,10 +75,18 @@ export default {
 			this.allChannels = data.channels;
 		},
 		// 添加频道
-		addChannel(channel) {
+		async addChannel(channel) {
 			// eslint-disable-next-line vue/no-mutating-props
 			this.userChannels.push(channel);
-			//TODO: 保存到本地
+			//登录存到线上，未登录存到本地
+			if (this.user) {
+				//存到线上
+				await addUserChannels({channels: [{ id: channel.id, seq: this.userChannels.length }]});
+			}
+			else {
+				//存到本地
+				setItem("userChannels", this.userChannels);
+			}
 		},
 		onUserChannelClick(index) {
 			if (this.isEdit && index !== 0) {
@@ -106,6 +116,7 @@ export default {
 		}
 	},
 	computed: {
+		...mapState({ user: (state) => state.token.user }),
 		// 推荐频道
 		recommendChannels() {
 			//1.先把我的频道的id取出来
@@ -150,6 +161,7 @@ export default {
       }
     }
   }
+
   ::v-deep .active {
     color: #d83b01 !important;
   }

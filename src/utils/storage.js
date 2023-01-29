@@ -19,3 +19,7 @@ export const setItem = (name, value) => {
 	}
 	window.localStorage.setItem(name, value);
 };
+//删除
+export const removeItem = (name) => {
+	window.localStorage.removeItem(name);
+}
