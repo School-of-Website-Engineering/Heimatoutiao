@@ -16,9 +16,9 @@ export default {
 	name: "searchResult",
 	data() {
 		return {
-			list: [],
-			loading: false,
-			finished: false,
+			list    : [],
+			loading : false,
+			finished: false
 		};
 	},
 	methods: {
@@ -36,8 +36,8 @@ export default {
 					this.finished = true;
 				}
 			}, 1000);
-		},
-	},
+		}
+	}
 };
 </script>
 
