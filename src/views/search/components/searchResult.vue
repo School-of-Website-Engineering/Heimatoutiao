@@ -1,3 +1,4 @@
+<!--// 该组件用于显示搜索建议-->
 <template>
 	<div class="search-result">
 		<van-list
@@ -6,36 +7,61 @@
 			finished-text="没有更多了"
 			@load="onLoad"
 		>
-			<van-cell v-for="item in list" :key="item" :title="item" />
+			<van-cell
+				v-for="(item, index) in list"
+				:key="index"
+				:title="item.title"
+			/>
 		</van-list>
 	</div>
 </template>
 
 <script>
+import { getSearchResults } from "@/api";
+
 export default {
 	name: "searchResult",
 	data() {
 		return {
 			list    : [],
 			loading : false,
-			finished: false
+			finished: false,
+			//页码
+			page    : 1,
+			//每页条数
+			perPage : 10
 		};
 	},
+	props: {
+		searchText: {
+			type    : String,
+			required: true,
+			default : ""
+		}
+	},
 	methods: {
-		onLoad() {
-			setTimeout(() => {
-				for (let i = 0; i < 10; i++) {
-					this.list.push(this.list.length + 1);
-				}
-
-				// 加载状态结束
-				this.loading = false;
-
-				// 数据全部加载完成
-				if (this.list.length >= 40) {
-					this.finished = true;
-				}
-			}, 1000);
+		async onLoad() {
+			const { data } = await getSearchResults({
+				//页码
+				page    : this.page,
+				//每页条数
+				per_page: this.perPage,
+				//搜索关键字
+				q       : this.searchText
+			});
+			//将搜索结果添加到list中
+			const { results } = data;
+			this.list.push(...results);
+			//关闭loading
+			this.loading = false;
+			//判断是否还有更多数据
+			if (results.length) {
+				this.page++;
+			}
+			else {
+				//没有更多数据
+				this.finished = true;
+			}
 		}
 	}
 };
