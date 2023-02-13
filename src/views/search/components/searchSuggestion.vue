@@ -5,8 +5,8 @@
 			:key="index"
 			class="search-item"
 			icon="search"
-			:title="item"
 		>
+			<div slot="title" v-html="highlight(item)"></div>
 		</van-cell>
 	</div>
 </template>
@@ -41,6 +41,16 @@ export default {
 			}, 500),
 			//该属性为true时，会立即执行一次回调函数
 			immediate: true
+		}
+	},
+	methods: {
+		highlight(item) {
+			return item.replace(
+				//正则表达式，匹配搜索关键字
+				new RegExp(this.searchText, "gi"),
+				//匹配到的关键字替换成红色
+				"<span style='color: red;'>$&</span>"
+			);
 		}
 	}
 };
