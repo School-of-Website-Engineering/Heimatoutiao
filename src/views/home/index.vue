@@ -8,6 +8,7 @@
         class="search-btn"
         round
         size="small"
+        to="/search"
         >搜索
       </van-button>
     </van-nav-bar>
@@ -61,7 +62,7 @@ export default {
 			// 频道列表
 			channels         : [],
 			// 是否显示频道编辑弹窗
-			isChannelEditShow: true
+			isChannelEditShow: false
 		};
 	},
 	created() {

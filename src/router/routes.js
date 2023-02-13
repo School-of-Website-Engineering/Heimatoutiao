@@ -13,6 +13,13 @@ export default [
 			),
 		name: "login"
 	},
+	//导入search
+	{
+		path     : "/search",
+		component: () =>
+			import(/* webpackChunkName: "search" */ "@/views/search/"),
+		name: "search"
+	},
 	{
 		path     : "/",
 		component: () =>

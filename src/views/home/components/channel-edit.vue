@@ -48,8 +48,12 @@ export default {
 	name : "ChannelEdit",
 	props: {
 		userChannels: {
+			//类型
 			type    : Array,
+			//是否必传
 			required: true
+			//默认值
+			// default: () => []
 		},
 		active: {
 			type    : Number,
