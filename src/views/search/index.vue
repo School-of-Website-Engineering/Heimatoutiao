@@ -14,7 +14,11 @@
 			/>
 		</form>
 		<!--搜索结果-->
-		<search-result class="search-result" v-if="showResult" />
+		<search-result
+			class="search-result"
+			v-if="showResult"
+			:search-text="searchText"
+		/>
 		<!--联想建议-->
 		<search-suggestion v-else-if="searchText" :search-text="searchText" />
 		<!--历史记录-->

@@ -24,6 +24,7 @@ export default {
 		};
 	},
 	props: {
+		// 搜索关键字
 		searchText: {
 			type    : String,
 			required: true

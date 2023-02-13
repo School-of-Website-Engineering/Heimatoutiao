@@ -74,3 +74,12 @@ export const getSearchSuggestions = (q) => {
 		params: { q }
 	});
 };
+
+//获取搜索结果
+export const getSearchResults = (params) => {
+	return request({
+		method: "GET",
+		url   : "/app/v1_0/search",
+		params
+	});
+}
