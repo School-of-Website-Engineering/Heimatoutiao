@@ -8,16 +8,28 @@
 				&nbsp;&nbsp;
 				<span>完成</span>
 			</div>
-			<!--      <van-icon name="delete" />-->
+			<!--<van-icon name="delete" />-->
 		</van-cell>
-		<van-cell title="hello">
+		<van-cell
+			v-for="(item, index) in searchHistories"
+			:key="index"
+			:title="item"
+		>
 			<van-icon name="close" />
 		</van-cell>
 	</div>
 </template>
 
 <script>
-export default { name: "searchHistory" };
+export default {
+	name : "searchHistory",
+	props: {
+		searchHistories: {
+			type    : Array,
+			required: true
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>
