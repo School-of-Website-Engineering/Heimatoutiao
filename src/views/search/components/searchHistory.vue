@@ -1,3 +1,4 @@
+<!--搜索历史-->
 <template>
 	<!-- 搜索历史 -->
 	<div class="search-history">

@@ -6,7 +6,7 @@
 			<van-search
 				v-model="searchText"
 				input-align="center"
-				@search="onSearch"
+				@search="onSearch(searchText)"
 				@cancel="$router.back()"
 				show-action
 				@focus="showResult = false"
@@ -20,7 +20,11 @@
 			:search-text="searchText"
 		/>
 		<!--联想建议-->
-		<search-suggestion v-else-if="searchText" :search-text="searchText" />
+		<search-suggestion
+			@search="onSearch"
+			v-else-if="searchText"
+			:search-text="searchText"
+		/>
 		<!--历史记录-->
 		<search-history v-else />
 	</div>
@@ -48,9 +52,10 @@ export default {
 		searchResult
 	},
 	methods: {
-		onSearch() {
+		onSearch(searchText) {
 			// 显示搜索结果
 			this.showResult = true;
+			this.searchText = searchText;
 		}
 	}
 };

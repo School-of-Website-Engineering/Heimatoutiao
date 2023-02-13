@@ -1,3 +1,4 @@
+<!--// 该组件用于显示搜索建议-->
 <template>
 	<div class="search-suggestion">
 		<van-cell
@@ -5,6 +6,7 @@
 			:key="index"
 			class="search-item"
 			icon="search"
+      @click="$emit('search', item)"
 		>
 			<div slot="title" v-html="highlight(item)"></div>
 		</van-cell>

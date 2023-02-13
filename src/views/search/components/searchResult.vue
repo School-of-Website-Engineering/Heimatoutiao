@@ -1,3 +1,4 @@
+<!--// 该组件用于显示搜索建议-->
 <template>
 	<div class="search-result">
 		<van-list
