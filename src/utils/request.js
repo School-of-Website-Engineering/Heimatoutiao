@@ -10,10 +10,11 @@ const request = axios.create({
 //请求拦截器
 request.interceptors.request.use(
 	(config) => {
-		//有没有token
-		let token = store.state.token
-		let isLoginToken = store.state.token.user.token
-		if (token && isLoginToken) {
+		//vuex有没有token
+		let token = store.state.token;
+		//vuex有没有登录token
+		let isLoginToken = store.state.token.user.token;
+		if (isLoginToken) {
 			config.headers.Authorization = `Bearer ${isLoginToken}`;
 		}
 		return config;
