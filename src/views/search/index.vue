@@ -9,16 +9,16 @@
 				@search="onSearch"
 				@cancel="$router.back()"
 				show-action
-        @focus="showResult = false"
+				@focus="showResult = false"
 				placeholder="请输入搜索关键词"
 			/>
 		</form>
-    <!--搜索结果-->
-    <search-result class="search-result" v-if="showResult"/>
+		<!--搜索结果-->
+		<search-result class="search-result" v-if="showResult" />
 		<!--联想建议-->
-		<search-suggestion v-else-if="searchText" :search-text="searchText"/>
+		<search-suggestion v-else-if="searchText" :search-text="searchText" />
 		<!--历史记录-->
-		<search-history v-else/>
+		<search-history v-else />
 	</div>
 </template>
 
@@ -54,13 +54,13 @@ export default {
 
 <style lang="scss" scoped>
 .search-container {
-  .search-result {
-    position: fixed;
-    top: 53px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-  }
+	.search-result {
+		position: fixed;
+		top: 53px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow-y: auto;
+	}
 }
 </style>

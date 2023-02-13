@@ -5,18 +5,17 @@ module.exports = defineConfig({transpileDependencies: true});
 
 module.exports = {
 	publicPath: "/Heimatoutiao/",
-	lintOnSave: false
+	lintOnSave: false,
 	// publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
 
-	// //代理服务器
-	// devServer: {
-	// 	proxy: {
-	// 		"/api": {
-	// 			target      : "http://gmall-h5-api.atguigu.cn", //代理转发路径
-	// 			pathRewrites: { "^/api": "" }, //匹配字符串
-	// 			ws          : true, //支持websocket
-	// 			changeOrigin: true //跨域
-	// 		}
-	// 	}
-	// }
+	//代理服务器
+	devServer: {
+		proxy: {
+			"/api": {
+				target      : "http://api-toutiao-web.itheima.net", //代理转发路径
+				ws          : true, //支持websocket
+				changeOrigin: true //跨域
+			}
+		}
+	}
 };

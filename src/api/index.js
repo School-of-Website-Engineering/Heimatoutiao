@@ -47,7 +47,7 @@ export const getAllChannels = () => {
 		method: "GET",
 		url   : "/app/v1_0/channels"
 	});
-}
+};
 
 //添加用户频道
 export const addUserChannels = (data) => {
@@ -56,7 +56,7 @@ export const addUserChannels = (data) => {
 		url   : "/app/v1_0/user/channels",
 		data
 	});
-}
+};
 
 //删除用户频道
 export const deleteUserChannels = (channelId) => {
@@ -64,4 +64,13 @@ export const deleteUserChannels = (channelId) => {
 		method: "DELETE",
 		url   : `/app/v1_0/user/channels/${channelId}`
 	});
-}
+};
+
+//获取搜索联想建议
+export const getSearchSuggestions = (q) => {
+	return request({
+		method: "GET",
+		url   : "/app/v1_0/suggestion",
+		params: { q }
+	});
+};

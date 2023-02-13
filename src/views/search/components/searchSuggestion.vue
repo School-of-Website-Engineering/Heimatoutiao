@@ -1,19 +1,27 @@
 <template>
-  <div class="search-suggestion">
-    <van-cell class="search-item" icon="search" title="搜索建议">
-    </van-cell>
-    <van-cell class="search-item" icon="search" title="搜索建议">
-    </van-cell>
-    <van-cell class="search-item" icon="search" title="搜索建议">
-    </van-cell>
-  </div>
+	<div class="search-suggestion">
+		<van-cell
+			v-for="(item, index) in searchList"
+			:key="index"
+			class="search-item"
+			icon="search"
+			:title="item"
+		>
+		</van-cell>
+	</div>
 </template>
 
 <script>
-import { watch } from "vue";
+import { getSearchSuggestions } from "@/api";
 
 export default {
-	name : "searchSuggestion",
+	name: "searchSuggestion",
+	data() {
+		return {
+			// 搜索建议列表
+			searchList: []
+		};
+	},
 	props: {
 		searchText: {
 			type    : String,
@@ -21,12 +29,15 @@ export default {
 		}
 	},
 	watch: {
-    //监听searchText的变化
+		//监听searchText的变化
 		searchText: {
-			handler: function(newVal, oldVal) {
-				console.log("searchText changed from " + oldVal + " to " + newVal);
+			async handler() {
+				//获取搜索建议
+				const { data } = await getSearchSuggestions(this.searchText);
+				console.log(data);
+				this.searchList = data.options;
 			},
-      //该属性为true时，会立即执行一次回调函数
+			//该属性为true时，会立即执行一次回调函数
 			immediate: true
 		}
 	}
@@ -35,8 +46,8 @@ export default {
 
 <style lang="scss" scoped>
 .search-suggestion {
-  .search-item {
-    font-size: 10px;
-  }
+	.search-item {
+		font-size: 10px;
+	}
 }
 </style>
