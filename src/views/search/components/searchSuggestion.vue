@@ -13,6 +13,7 @@
 
 <script>
 import { getSearchSuggestions } from "@/api";
+import { debounce } from "lodash";
 
 export default {
 	name: "searchSuggestion",
@@ -31,12 +32,13 @@ export default {
 	watch: {
 		//监听searchText的变化
 		searchText: {
-			async handler() {
+			//使用lodash的防抖函数
+			handler: debounce(async function() {
 				//获取搜索建议
 				const { data } = await getSearchSuggestions(this.searchText);
 				console.log(data);
 				this.searchList = data.options;
-			},
+			}, 500),
 			//该属性为true时，会立即执行一次回调函数
 			immediate: true
 		}
