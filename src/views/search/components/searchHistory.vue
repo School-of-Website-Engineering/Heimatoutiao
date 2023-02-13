@@ -3,26 +3,32 @@
 	<!-- 搜索历史 -->
 	<div class="search-history">
 		<van-cell title="搜索历史">
-			<div class="delete">
+			<div class="delete" v-if="showDelete">
 				<span>全部删除</span>
 				&nbsp;&nbsp;
-				<span>完成</span>
+				<span @click="showDelete = false">完成</span>
 			</div>
-			<!--<van-icon name="delete" />-->
+			<van-icon v-else name="delete" @click="showDelete = true" />
 		</van-cell>
 		<van-cell
 			v-for="(item, index) in searchHistories"
 			:key="index"
 			:title="item"
 		>
-			<van-icon name="close" />
+			<van-icon name="close" v-show="showDelete" />
 		</van-cell>
 	</div>
 </template>
 
 <script>
 export default {
-	name : "searchHistory",
+	name: "searchHistory",
+	data() {
+		return {
+			//是否显示删除按钮
+			showDelete: false
+		};
+	},
 	props: {
 		searchHistories: {
 			type    : Array,
