@@ -26,7 +26,12 @@
 			:search-text="searchText"
 		/>
 		<!--历史记录-->
-		<search-history v-else :search-histories="searchHistory" />
+		<search-history
+			v-else
+			:search-histories="searchHistory"
+			@search="onSearch"
+			@deleteAll="searchHistory = $event"
+		/>
 	</div>
 </template>
 
@@ -50,6 +55,11 @@ export default {
 			searchHistory: getItem("searchHistory") || []
 		};
 	},
+	watch: {
+		searchHistory() {
+			setItem("searchHistory", this.searchHistory);
+		}
+	},
 	components: {
 		searchSuggestion,
 		searchHistory,
@@ -62,17 +72,21 @@ export default {
 		async lodaSearchHistory() {
 			//将线上与本地的搜索历史记录合并
 			//如果用户登录
-			let localHistory = getItem("searchHistory") || [];
-			if (this.token) {
-				const { data } = await getSearchHistories();
-				console.log(data.keywords + "历史记录");
-				//去重,去除空字符串
-				localHistory = [...new Set([...data.keywords, ...localHistory])].filter((item) => item);
-				console.log(this.searchHistory);
-			}
+			const localHistory = getItem("searchHistory") || [];
+			// if (this.token) {
+			// 	const { data } = await getSearchHistories();
+			// 	console.log(data.keywords + "历史记录");
+			// 	//去重,去除空字符串
+			// 	localHistory = [...new Set([...data.keywords, ...localHistory])].filter((item) => item);
+			// 	console.log(this.searchHistory);
+			// }
 			this.searchHistory = localHistory;
 		},
 		onSearch(searchText) {
+			//如果搜索关键字为空，则不进行搜索
+			if (!searchText) {
+				return;
+			}
 			// 显示搜索结果
 			this.showResult = true;
 			this.searchText = searchText;
@@ -82,7 +96,7 @@ export default {
 				...this.searchHistory.filter((item) => item !== searchText)
 			];
 			//将搜索历史记录存储到本地
-			setItem("searchHistory", this.searchHistory);
+			// setItem("searchHistory", this.searchHistory);
 		}
 	},
 	computed: {
