@@ -82,11 +82,19 @@ export const getSearchResults = (params) => {
 		url   : "/app/v1_0/search",
 		params
 	});
-}
+};
 //获取用户搜索历史
 export const getSearchHistories = () => {
 	return request({
 		method: "GET",
 		url   : "/app/v1_0/search/histories"
 	});
-}
+};
+
+//获取新闻文章详情
+export const getArticle = (articleId) => {
+	return request({
+		method: "GET",
+		url   : `/app/v1_0/articles/${articleId}`
+	});
+};
