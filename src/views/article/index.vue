@@ -28,30 +28,41 @@
 				Intimating, intimidate, intimidated, intimidating, intimidation.
 				MORE Nearby Words sadety sadewe sadey sadeye sadf sadfasd s s
 			</p>
-      <ul>
-        <li>ADSASFASD</li>
-        <li>ADSASFASD</li>
-        <li>ADSASFASD</li>
-        <li>ADSASFASD</li>
-        <li>ADSASFASD</li>
-      </ul>
+			<ul>
+				<li>ADSASFASD</li>
+				<li>ADSASFASD</li>
+				<li>ADSASFASD</li>
+				<li>ADSASFASD</li>
+				<li>ADSASFASD</li>
+			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
 import "./github-markdown-light.css";
+import { getArticle } from "@/api";
+
 export default {
 	name: "Artice",
 	data() {
 		return {};
 	},
+	created() {
+		this.loadArticle();
+	},
 	props: {
 		articleId: {
-			type: String,
-			required: true,
-		},
+			type    : [String, Number, Object],
+			required: true
+		}
 	},
+	methods: {
+		async loadArticle() {
+			const { data } = await getArticle(this.articleId);
+			console.log(data);
+		}
+	}
 };
 </script>
 
@@ -59,9 +70,9 @@ export default {
 .markdown-body {
 	padding: 14px;
 	background-color: #fff;
-  ul{
-    list-style: rean-hanja-informal;
-  }
+	ul {
+		list-style: rean-hanja-informal;
+	}
 }
 .user-info {
 	.name {
