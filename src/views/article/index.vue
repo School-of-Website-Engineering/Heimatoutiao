@@ -22,10 +22,25 @@
 				>关注</van-button
 			>
 		</van-cell>
+		<div class="content markdown-body">
+			<p>
+				Misspelling of the Day inttimatdating Antedating, Instituting,
+				Intimating, intimidate, intimidated, intimidating, intimidation.
+				MORE Nearby Words sadety sadewe sadey sadeye sadf sadfasd s s
+			</p>
+      <ul>
+        <li>ADSASFASD</li>
+        <li>ADSASFASD</li>
+        <li>ADSASFASD</li>
+        <li>ADSASFASD</li>
+        <li>ADSASFASD</li>
+      </ul>
+		</div>
 	</div>
 </template>
 
 <script>
+import "./github-markdown-light.css";
 export default {
 	name: "Artice",
 	data() {
@@ -41,6 +56,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.markdown-body {
+	padding: 14px;
+	background-color: #fff;
+  ul{
+    list-style: rean-hanja-informal;
+  }
+}
 .user-info {
 	.name {
 		font-size: 12px;
