@@ -2,40 +2,29 @@
 	<!--顶部-->
 	<div>
 		<van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
-		<h1 class="title">sadfsadffffffffdsafffffffff</h1>
+		<h1 class="title">{{ article.title }}</h1>
 		<van-cell class="user-info" center>
-			<div class="name" slot="title">adsfasd</div>
+			<div class="name" slot="title">{{ article.aut_name }}</div>
 			<van-image
 				slot="icon"
 				round
 				fit="cover"
 				class="user-avatar"
-				src="https://img01.yzcdn.cn/vant/cat.jpeg"
+				:src="article.aut_photo"
 			/>
-			<div slot="label" class="time">sadfads</div>
+			<div slot="label" class="time">
+				{{ article.pubdate | relativeTime }}
+			</div>
 			<van-button
-				type="info"
+				:type="article.is_followed ? 'default' : 'info'"
 				round
 				size="small"
 				class="right-btn"
-				icon="plus"
-				>关注</van-button
+				:icon="article.is_followed ? '' : 'plus'"
+				>{{ article.is_followed ? "已关注" : "关注" }}</van-button
 			>
 		</van-cell>
-		<div class="content markdown-body">
-			<p>
-				Misspelling of the Day inttimatdating Antedating, Instituting,
-				Intimating, intimidate, intimidated, intimidating, intimidation.
-				MORE Nearby Words sadety sadewe sadey sadeye sadf sadfasd s s
-			</p>
-			<ul>
-				<li>ADSASFASD</li>
-				<li>ADSASFASD</li>
-				<li>ADSASFASD</li>
-				<li>ADSASFASD</li>
-				<li>ADSASFASD</li>
-			</ul>
-		</div>
+		<div class="content markdown-body" v-html="article.content"></div>
 	</div>
 </template>
 
@@ -46,7 +35,10 @@ import { getArticle } from "@/api";
 export default {
 	name: "Artice",
 	data() {
-		return {};
+		return {
+			//文章数据对象
+			article: {}
+		};
 	},
 	created() {
 		this.loadArticle();
@@ -60,7 +52,21 @@ export default {
 	methods: {
 		async loadArticle() {
 			const { data } = await getArticle(this.articleId);
+			console.log("---------------文章数据↓-----------------");
 			console.log(data);
+			this.article = data;
+			this.replaceAutPhoto();
+		},
+		//随机返回一张图片
+		replaceAutPhoto() {
+			let photos = [
+				"https://img01.yzcdn.cn/vant/cat.jpeg",
+				"https://img01.yzcdn.cn/vant/logo.png",
+				"https://static.wikia.nocookie.net/fcs-vs-battle/images/3/35/ASDFGuy_Vector.png/revision/latest?cb=20201113171318",
+				"https://www.aplpackaging.co.uk/wp-content/uploads/2019/12/mailingbox-brown-310x240x114-000-300x300.jpg"
+			];
+			let randomIndex = Math.floor(Math.random() * photos.length);
+			this.article.aut_photo = photos[randomIndex];
 		}
 	}
 };
