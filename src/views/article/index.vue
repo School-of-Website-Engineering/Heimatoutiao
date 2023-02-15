@@ -1,6 +1,6 @@
 <template>
-	<!--顶部-->
 	<div>
+		<!--顶部-->
 		<van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
 		<h1 class="title">{{ article.title }}</h1>
 		<van-cell class="user-info" center>
@@ -21,6 +21,8 @@
 				size="small"
 				class="right-btn"
 				:icon="article.is_followed ? '' : 'plus'"
+				@click="onFollow"
+				:loading="isFollowLoading"
 				>{{ article.is_followed ? "已关注" : "关注" }}
 			</van-button>
 		</van-cell>
@@ -29,12 +31,32 @@
 			v-html="article.content"
 			ref="article-content"
 		></div>
+		<!-- 底部区域 -->
+		<div class="article-bottom">
+			<van-button class="comment-btn" type="default" round size="small"
+				>写评论</van-button
+			>
+			<van-icon name="comment-o" info="123" color="#777"></van-icon>
+			<van-icon
+				:name="article.is_collected ? 'star' : 'star-o'"
+				:color="article.is_collected ? 'orange' : '#777'"
+				@click="onCollect"
+			></van-icon>
+			<van-icon name="good-job-o" color="#777"></van-icon>
+			<van-icon name="share" color="#777"></van-icon>
+		</div>
 	</div>
 </template>
 
 <script>
 import "./github-markdown-light.css";
-import { getArticle } from "@/api";
+import {
+	getArticle,
+	addFollow,
+	deleteFollow,
+	addCollect,
+	deleteCollect
+} from "@/api";
 import { ImagePreview } from "vant";
 
 export default {
@@ -42,7 +64,11 @@ export default {
 	data() {
 		return {
 			//文章数据对象
-			article: {}
+			article         : {},
+			//关注用户的按钮
+			isFollowLoading : false,
+			//收藏文章的按钮
+			isCollectLoading: false
 		};
 	},
 	created() {
@@ -56,6 +82,40 @@ export default {
 		}
 	},
 	methods: {
+		//关注用户
+		async onFollow() {
+			this.isFollowLoading = true;
+			if (this.article.is_followed) {
+				//已关注，取消关注
+				await deleteFollow(this.article.aut_id);
+				this.$toast("已取消关注");
+			}
+			else {
+				//未关注,添加关注
+				await addFollow(this.article.aut_id);
+				this.$toast("已关注");
+			}
+			this.article.is_followed = !this.article.is_followed;
+			this.isFollowLoading = true;
+		},
+		//收藏文章
+		async onCollect() {
+			this.isCollectLoading = true;
+			if (this.article.is_collected) {
+				//已收藏，取消收藏
+				await deleteCollect(this.articleId);
+				this.$toast.success("已取消收藏");
+			}
+			else {
+				//未收藏,添加收藏
+				await addCollect(this.articleId);
+				this.$toast.success("已收藏");
+			}
+			this.article.is_followed = !this.article.is_followed;
+			this.isCollectLoading = true;
+		},
+
+		//文章详情z
 		async loadArticle() {
 			const { data } = await getArticle(this.articleId);
 			console.log("---------------文章数据↓-----------------");
@@ -131,6 +191,25 @@ export default {
 
 	ul {
 		list-style: rean-hanja-informal;
+	}
+	padding-bottom: 100px;
+}
+//底部评论区，水平垂直居中平分排列
+.article-bottom {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px;
+	background-color: #fff;
+	//固定在底部
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	.comment-btn {
+		color: #ccc;
+		width: 120px;
+		height: 25px;
 	}
 }
 

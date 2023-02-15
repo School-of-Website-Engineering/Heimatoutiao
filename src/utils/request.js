@@ -13,9 +13,9 @@ const request = axios.create({
 				return JSONbig.parse(data);
 			}
 			catch (err) {
-				console.log("数据转换失败", err);
+				// console.log("转换失败", err);
+				return data;
 			}
-			return data;
 		}
 	]
 });
