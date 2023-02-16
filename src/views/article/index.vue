@@ -67,7 +67,7 @@ import {
 	addCollect,
 	deleteCollect,
 	deleteLike,
-	addLike,
+	addLike
 } from "@/api";
 import { ImagePreview } from "vant";
 
@@ -76,11 +76,11 @@ export default {
 	data() {
 		return {
 			//文章数据对象
-			article: {},
+			article         : {},
 			//关注用户的按钮
-			isFollowLoading: false,
+			isFollowLoading : false,
 			//收藏文章的按钮
-			isCollectLoading: false,
+			isCollectLoading: false
 		};
 	},
 	components: { CommentList },
@@ -90,9 +90,9 @@ export default {
 	},
 	props: {
 		articleId: {
-			type: [String, Number, Object],
-			required: true,
-		},
+			type    : [String, Number, Object],
+			required: true
+		}
 	},
 	methods: {
 		//关注用户
@@ -102,7 +102,8 @@ export default {
 				//已关注，取消关注
 				await deleteFollow(this.article.aut_id);
 				this.$toast("已取消关注");
-			} else {
+			}
+			else {
 				//未关注,添加关注
 				await addFollow(this.article.aut_id);
 				this.$toast("已关注");
@@ -115,20 +116,21 @@ export default {
 			//禁止背景点击
 			this.$toast.loading({
 				forbidClick: true,
-				message: "加载中...",
+				message    : "加载中..."
 			});
 			this.isCollectLoading = true;
 			if (this.article.is_collected) {
 				//已收藏，取消收藏
 				await deleteCollect(this.articleId);
-			} else {
+			}
+			else {
 				//未收藏,添加收藏
 				await addCollect(this.articleId);
 			}
 			this.article.is_followed = !this.article.is_followed;
 			this.isCollectLoading = true;
 			this.$toast.success(
-				`${this.article.is_collected ? "取消" : ""}收藏成功`,
+				`${this.article.is_collected ? "取消" : ""}收藏成功`
 			);
 		},
 		//点赞
@@ -136,19 +138,20 @@ export default {
 			//禁止背景点击
 			this.$toast.loading({
 				forbidClick: true,
-				message: "加载中...",
+				message    : "加载中..."
 			});
 			if (this.article.attitude === 1) {
 				//已点赞，取消点赞
 				await deleteLike(this.articleId);
 				this.article.attitude = -1;
-			} else {
+			}
+			else {
 				//未点赞,添加点赞
 				await addLike(this.articleId);
 				this.article.attitude = 1;
 			}
 			this.$toast.success(
-				`${this.article.attitude === 1 ? "" : "取消"}点赞成功`,
+				`${this.article.attitude === 1 ? "" : "取消"}点赞成功`
 			);
 		},
 
@@ -182,10 +185,10 @@ export default {
 			imgs.forEach((img, index) => {
 				//每循环一次将src添加到数组
 				imgPaths.push(img.src);
-				img.onclick = function () {
+				img.onclick = function() {
 					ImagePreview({
-						images: imgPaths,
-						startPosition: index,
+						images       : imgPaths,
+						startPosition: index
 					});
 				};
 			});
@@ -196,7 +199,7 @@ export default {
 				"https://img01.yzcdn.cn/vant/cat.jpeg",
 				"https://img01.yzcdn.cn/vant/logo.png",
 				"https://static.wikia.nocookie.net/fcs-vs-battle/images/3/35/ASDFGuy_Vector.png/revision/latest?cb=20201113171318",
-				"https://www.aplpackaging.co.uk/wp-content/uploads/2019/12/mailingbox-brown-310x240x114-000-300x300.jpg",
+				"https://www.aplpackaging.co.uk/wp-content/uploads/2019/12/mailingbox-brown-310x240x114-000-300x300.jpg"
 			];
 			let randomIndex = Math.floor(Math.random() * photos.length);
 			this.article.aut_photo = photos[randomIndex];
@@ -206,18 +209,18 @@ export default {
 		replaceContentImg() {
 			this.article.content = this.article.content.replace(
 				/\/\/upload-images.*?['"]/g,
-				"https://img01.yzcdn.cn/vant/cat.jpeg",
+				"https://img01.yzcdn.cn/vant/cat.jpeg"
 			);
 			this.article.content = this.article.content.replace(
 				/src=".*?['"]/g,
-				'src="https://img01.yzcdn.cn/vant/cat.jpeg"',
+				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
 			);
 			this.article.content = this.article.content.replace(
 				/data-original-src=".*?['"]/g,
-				'src="https://img01.yzcdn.cn/vant/cat.jpeg"',
+				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
 			);
-		},
-	},
+		}
+	}
 };
 </script>
 
