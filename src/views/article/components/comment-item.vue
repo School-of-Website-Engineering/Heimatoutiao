@@ -49,11 +49,13 @@ export default {
 			if (this.comment.is_liking) {
 				//取消点赞
 				await deleteCommentLike(commentId);
+				// eslint-disable-next-line vue/no-mutating-props
 				this.comment.like_count--;
 			}
 			else {
 				//点赞
 				await addCommentLike(commentId);
+				// eslint-disable-next-line vue/no-mutating-props
 				this.comment.like_count++;
 			}
 			//更新点赞状态
