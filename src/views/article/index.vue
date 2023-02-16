@@ -62,6 +62,7 @@
 		<!-- 发布评论 -->
 		<van-popup v-model="showPost" position="bottom">
 			<post-comment
+				@on-post-success="onCommentSuccess"
 				:articleId="articleId"
 				:target="articleId"
 			></post-comment>
@@ -101,7 +102,6 @@ export default {
 	components: { CommentList, PostComment },
 	created() {
 		this.loadArticle();
-		console.log("--------------原始content↓------------------");
 	},
 	props: {
 		articleId: {
@@ -150,11 +150,6 @@ export default {
 		},
 		//点赞
 		async onLike() {
-			//禁止背景点击
-			this.$toast.loading({
-				forbidClick: true,
-				message    : "加载中..."
-			});
 			if (this.article.attitude === 1) {
 				//已点赞，取消点赞
 				await deleteLike(this.articleId);
@@ -170,7 +165,7 @@ export default {
 			);
 		},
 
-		//文章详情z
+		//文章详情
 		async loadArticle() {
 			const { data } = await getArticle(this.articleId);
 			console.log("---------------文章数据↓-----------------");
@@ -234,6 +229,16 @@ export default {
 				/data-original-src=".*?['"]/g,
 				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
 			);
+		},
+		//评论发布成功
+		onCommentSuccess(comment) {
+			this.$toast,
+			loading({
+				message    : "发布中...",
+				forbidClick: true
+			});
+			this.$toast.success("评论成功");
+			this.showPost = false;
 		}
 	}
 };

@@ -1,14 +1,18 @@
 <template>
 	<div class="post-comment">
 		<van-field
-			v-model="message"
+			v-model.trim="message"
 			rows="2"
 			type="textarea"
 			maxlength="120"
 			placeholder="请输入评论 "
 			show-word-limit
 		/>
-		<van-button class="on-post" type="primary" @click="onPost"
+		<van-button
+			class="on-post"
+			type="primary"
+			@click="onPost"
+			disabled="message.length === 0"
 			>发布</van-button
 		>
 	</div>
@@ -23,28 +27,29 @@ export default {
 	},
 	props: {
 		target: {
-			type    : [String, Number, Object],
-			required: true
+			type: [String, Number, Object],
+			required: true,
 		},
 		articleId: {
-			type   : [String, Number, Object],
-			default: null
-		}
+			type: [String, Number, Object],
+			default: null,
+		},
 	},
 	methods: {
+		// 发布评论
 		async onPost() {
 			const { data } = await addComment({
-				target : this.target.toString(),
+				target: this.target.toString(),
 				content: this.message,
-				art_id :
-					this.articleId === null ? this.articleId.toString() : null
+				art_id:
+					this.articleId === null ? this.articleId.toString() : null,
 			});
 			console.log(this.articleId);
 			console.log(data);
-			this.$toast.success("评论成功");
+			this.$emit("on-post-success", data);
 			this.message = "";
-		}
-	}
+		},
+	},
 };
 </script>
 

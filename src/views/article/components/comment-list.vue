@@ -30,13 +30,13 @@ export default {
 	},
 	data() {
 		return {
-			list    : [],
 			loading : false,
 			finished: false,
 			// 下一页页码
 			offset  : null,
 			//每页条数
-			limit   : 10
+			limit   : 10,
+			list    : []
 		};
 	},
 	methods: {
