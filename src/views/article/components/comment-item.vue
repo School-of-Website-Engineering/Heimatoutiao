@@ -10,16 +10,21 @@
 		<div slot="title">
 			<div class="title-warp">
 				<div class="name">{{ comment.aut_name }}</div>
-				<div class="like-wrap">
-					<van-icon name="good-job-o" />
-					<span>{{ comment.like_count }}</span>
+				<div class="like-wrap" @click="onLike">
+					<van-icon
+						:class="{ liked: comment.is_liking }"
+						:name="comment.is_liking ? 'good-job' : 'good-job-o'"
+					/>
+					<span :class="{ liked: comment.is_liking }">{{
+						comment.like_count
+					}}</span>
 				</div>
 			</div>
-			<div class="content">{{ comment.content }}啥发送到发送到发送到发送到发大水发生的</div>
+			<div class="content">{{ comment.content }}</div>
 			<div class="time">
-				<span>{{ comment.pubdate | datetime('MM-DD HH:ss') }}</span>
+				<span>{{ comment.pubdate | datetime("MM-DD HH:ss") }}</span>
 				<van-button class="reply-btn" round size="mini">
-					12回复
+					{{ comment.reply_count }}回复
 				</van-button>
 			</div>
 		</div>
@@ -27,6 +32,8 @@
 </template>
 
 <script>
+import { deleteCommentLike, addCommentLike } from "@/api";
+
 export default {
 	name : "CommentItem",
 	props: {
@@ -35,14 +42,32 @@ export default {
 			required: true
 		}
 	},
-	data() {
-		return {};
-	},
-	methods: {}
+	methods: {
+		async onLike() {
+			//已点赞
+			const commentId = this.comment.com_id.toString();
+			if (this.comment.is_liking) {
+				//取消点赞
+				await deleteCommentLike(commentId);
+				this.comment.like_count--;
+			}
+			else {
+				//点赞
+				await addCommentLike(commentId);
+				this.comment.like_count++;
+			}
+			//更新点赞状态
+			// eslint-disable-next-line vue/no-mutating-props
+			this.comment.is_liking = !this.comment.is_liking;
+		}
+	}
 };
 </script>
 
 <style lang="scss" scoped>
+.liked {
+	color: hotpink;
+}
 .title-warp {
 	display: flex;
 	justify-content: space-between;
