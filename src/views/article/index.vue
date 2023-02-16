@@ -34,14 +34,27 @@
 				ref="article-content"
 			></div>
 			<!-- 文章评论列表 -->
-			<CommentList :source="articleId" />
+			<CommentList
+				:source="articleId"
+				@update-total-count="totalCommentCount = $event"
+				@reply-click="onReplyClick"
+			/>
 		</div>
 		<!-- 底部区域 -->
 		<div class="article-bottom">
-			<van-button class="comment-btn" type="default" round size="small"
+			<van-button
+				class="comment-btn"
+				type="default"
+				round
+				size="small"
+				@click="showPost = true"
 				>写评论</van-button
 			>
-			<van-icon name="comment-o" info="123" color="#777"></van-icon>
+			<van-icon
+				name="comment-o"
+				:info="totalCommentCount"
+				color="#777"
+			></van-icon>
 			<van-icon
 				:name="article.is_collected ? 'star' : 'star-o'"
 				:color="article.is_collected ? 'orange' : '#777'"
@@ -54,12 +67,26 @@
 			></van-icon>
 			<van-icon name="share" color="#777"></van-icon>
 		</div>
+		<!-- 发布评论 -->
+		<van-popup v-model="showPost" position="bottom">
+			<post-comment
+				@on-post-success="onCommentSuccess"
+				:articleId="articleId"
+				:target="articleId"
+			></post-comment>
+		</van-popup>
+		<!-- 评论恢复 -->
+		<van-popup v-model="showReply" position="bottom">
+			<CommentReply :comment="replyComment"></CommentReply>
+		</van-popup>
 	</div>
 </template>
 
 <script>
 import "./github-markdown-light.css";
+import CommentReply from "./components/comment-reply.vue";
 import CommentList from "./components/comment-list.vue";
+import PostComment from "./components/post-comment.vue";
 import {
 	getArticle,
 	addFollow,
@@ -72,21 +99,29 @@ import {
 import { ImagePreview } from "vant";
 
 export default {
-	name: "Artice",
+	name: "ArticeIndex",
 	data() {
 		return {
 			//文章数据对象
-			article         : {},
+			article          : {},
 			//关注用户的按钮
-			isFollowLoading : false,
+			isFollowLoading  : false,
 			//收藏文章的按钮
-			isCollectLoading: false
+			isCollectLoading : false,
+			//显示发布评论的弹出层
+			showPost         : false,
+			//评论总数
+			totalCommentCount: 0,
+			//显示回复评论的弹出层
+			showReply        : false,
+			//回复评论的数据对象
+			replyComment     : {}
 		};
 	},
-	components: { CommentList },
+	// eslint-disable-next-line vue/no-unused-components
+	components: { CommentList, PostComment, CommentReply },
 	created() {
 		this.loadArticle();
-		console.log("--------------原始content↓------------------");
 	},
 	props: {
 		articleId: {
@@ -95,6 +130,12 @@ export default {
 		}
 	},
 	methods: {
+		//点击回复评论
+		onReplyClick(comment) {
+			//展示回复评论的弹出层
+			this.showReply = true;
+			console.log(comment);
+		},
 		//关注用户
 		async onFollow() {
 			this.isFollowLoading = true;
@@ -135,11 +176,6 @@ export default {
 		},
 		//点赞
 		async onLike() {
-			//禁止背景点击
-			this.$toast.loading({
-				forbidClick: true,
-				message    : "加载中..."
-			});
 			if (this.article.attitude === 1) {
 				//已点赞，取消点赞
 				await deleteLike(this.articleId);
@@ -155,7 +191,7 @@ export default {
 			);
 		},
 
-		//文章详情z
+		//文章详情
 		async loadArticle() {
 			const { data } = await getArticle(this.articleId);
 			console.log("---------------文章数据↓-----------------");
@@ -219,6 +255,20 @@ export default {
 				/data-original-src=".*?['"]/g,
 				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
 			);
+		},
+		//评论发布成功
+		onCommentSuccess(comment) {
+			this.$toast.loading({
+				message    : "发布中...",
+				forbidClick: true
+			});
+			this.replyComment = comment;
+			console.log("评论成功");
+			console.log(this.replyComment);
+			//更新评论总数量
+			this.totalCommentCount++;
+			this.$toast.success("评论成功");
+			this.showPost = false;
 		}
 	}
 };

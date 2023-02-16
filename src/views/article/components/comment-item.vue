@@ -23,8 +23,13 @@
 			<div class="content">{{ comment.content }}</div>
 			<div class="time">
 				<span>{{ comment.pubdate | datetime("MM-DD HH:ss") }}</span>
-				<van-button class="reply-btn" round size="mini">
-					{{ comment.reply_count }}回复
+				<van-button
+					class="reply-btn"
+					round
+					size="mini"
+					@click="$emit('reply-click', comment)"
+				>
+					{{ comment.reply_count }} 回复
 				</van-button>
 			</div>
 		</div>

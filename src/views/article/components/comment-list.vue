@@ -11,6 +11,7 @@
 				v-for="(comment, index) in list"
 				:key="index"
 				:comment="comment"
+        @reply-click="$emit('reply-click', $event)"
 			></comment-item>
 		</van-list>
 	</div>
@@ -21,7 +22,7 @@ import { getComments } from "@/api";
 import CommentItem from "@/views/article/components/comment-item.vue";
 export default {
 	name      : "CommentList",
-	components: {CommentItem},
+	components: { CommentItem },
 	props     : {
 		source: {
 			type    : [String, Number, Object],
@@ -30,13 +31,13 @@ export default {
 	},
 	data() {
 		return {
-			list    : [],
 			loading : false,
 			finished: false,
 			// 下一页页码
 			offset  : null,
 			//每页条数
-			limit   : 10
+			limit   : 10,
+			list    : []
 		};
 	},
 	methods: {
@@ -48,6 +49,7 @@ export default {
 				offset: this.offset,
 				limit : this.limit
 			});
+			this.$emit("update-total-count", data.total_count);
 			console.log(data);
 			//2.把数据添加到list中
 			const { results } = data;
