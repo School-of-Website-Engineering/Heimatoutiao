@@ -28,6 +28,15 @@ export default [
 			import(/* webpackChunkName: "search" */ "@/views/search/"),
 		name: "search"
 	},
+	//用户资料UserProfile
+	{
+		path     : "/user/profile",
+		component: () =>
+			import(
+				/* webpackChunkName: "user_profile" */ "@/views/user-profile/"
+			),
+		name: "user-profile"
+	},
 	{
 		path     : "/",
 		component: () =>
