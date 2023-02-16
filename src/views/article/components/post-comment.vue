@@ -27,29 +27,29 @@ export default {
 	},
 	props: {
 		target: {
-			type: [String, Number, Object],
-			required: true,
+			type    : [String, Number, Object],
+			required: true
 		},
 		articleId: {
-			type: [String, Number, Object],
-			default: null,
-		},
+			type   : [String, Number, Object],
+			default: null
+		}
 	},
 	methods: {
 		// 发布评论
 		async onPost() {
 			const { data } = await addComment({
-				target: this.target.toString(),
+				target : this.target.toString(),
 				content: this.message,
-				art_id:
-					this.articleId === null ? this.articleId.toString() : null,
+				art_id :
+					this.articleId === null ? this.articleId.toString() : null
 			});
 			console.log(this.articleId);
 			console.log(data);
 			this.$emit("on-post-success", data);
 			this.message = "";
-		},
-	},
+		}
+	}
 };
 </script>
 
