@@ -34,7 +34,7 @@
 				ref="article-content"
 			></div>
 			<!-- 文章评论列表 -->
-			<CommentList :articleId="articleId" />
+			<CommentList :source="articleId" />
 		</div>
 		<!-- 底部区域 -->
 		<div class="article-bottom">
@@ -83,9 +83,7 @@ export default {
 			isCollectLoading: false,
 		};
 	},
-	components: {
-		CommentList,
-	},
+	components: { CommentList },
 	created() {
 		this.loadArticle();
 		console.log("--------------原始content↓------------------");
