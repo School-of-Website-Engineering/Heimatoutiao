@@ -2,35 +2,40 @@
 	<div>
 		<!--顶部-->
 		<van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
-		<h1 class="title">{{ article.title }}</h1>
-		<van-cell class="user-info" center>
-			<div class="name" slot="title">{{ article.aut_name }}</div>
-			<van-image
-				slot="icon"
-				round
-				fit="cover"
-				class="user-avatar"
-				:src="article.aut_photo"
-			/>
-			<div slot="label" class="time">
-				{{ article.pubdate | relativeTime }}
-			</div>
-			<van-button
-				:type="article.is_followed ? 'default' : 'info'"
-				round
-				size="small"
-				class="right-btn"
-				:icon="article.is_followed ? '' : 'plus'"
-				@click="onFollow"
-				:loading="isFollowLoading"
-				>{{ article.is_followed ? "已关注" : "关注" }}
-			</van-button>
-		</van-cell>
-		<div
-			class="content markdown-body"
-			v-html="article.content"
-			ref="article-content"
-		></div>
+		<!-- 文章信息区域 -->
+		<div class="article-wrap">
+			<h1 class="title">{{ article.title }}</h1>
+			<van-cell class="user-info" center>
+				<div class="name" slot="title">{{ article.aut_name }}</div>
+				<van-image
+					slot="icon"
+					round
+					fit="cover"
+					class="user-avatar"
+					:src="article.aut_photo"
+				/>
+				<div slot="label" class="time">
+					{{ article.pubdate | relativeTime }}
+				</div>
+				<van-button
+					:type="article.is_followed ? 'default' : 'info'"
+					round
+					size="small"
+					class="right-btn"
+					:icon="article.is_followed ? '' : 'plus'"
+					@click="onFollow"
+					:loading="isFollowLoading"
+					>{{ article.is_followed ? "已关注" : "关注" }}
+				</van-button>
+			</van-cell>
+			<div
+				class="content markdown-body"
+				v-html="article.content"
+				ref="article-content"
+			></div>
+			<!-- 文章评论列表 -->
+			<CommentList :articleId="articleId" />
+		</div>
 		<!-- 底部区域 -->
 		<div class="article-bottom">
 			<van-button class="comment-btn" type="default" round size="small"
@@ -42,7 +47,11 @@
 				:color="article.is_collected ? 'orange' : '#777'"
 				@click="onCollect"
 			></van-icon>
-			<van-icon name="good-job-o" color="#777"></van-icon>
+			<van-icon
+				:name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
+				:color="article.attitude === 1 ? 'hotpink' : '#777'"
+				@click="onLike"
+			></van-icon>
 			<van-icon name="share" color="#777"></van-icon>
 		</div>
 	</div>
@@ -50,12 +59,15 @@
 
 <script>
 import "./github-markdown-light.css";
+import CommentList from "./components/comment-list.vue";
 import {
 	getArticle,
 	addFollow,
 	deleteFollow,
 	addCollect,
-	deleteCollect
+	deleteCollect,
+	deleteLike,
+	addLike,
 } from "@/api";
 import { ImagePreview } from "vant";
 
@@ -64,12 +76,15 @@ export default {
 	data() {
 		return {
 			//文章数据对象
-			article         : {},
+			article: {},
 			//关注用户的按钮
-			isFollowLoading : false,
+			isFollowLoading: false,
 			//收藏文章的按钮
-			isCollectLoading: false
+			isCollectLoading: false,
 		};
+	},
+	components: {
+		CommentList,
 	},
 	created() {
 		this.loadArticle();
@@ -77,9 +92,9 @@ export default {
 	},
 	props: {
 		articleId: {
-			type    : [String, Number, Object],
-			required: true
-		}
+			type: [String, Number, Object],
+			required: true,
+		},
 	},
 	methods: {
 		//关注用户
@@ -89,8 +104,7 @@ export default {
 				//已关注，取消关注
 				await deleteFollow(this.article.aut_id);
 				this.$toast("已取消关注");
-			}
-			else {
+			} else {
 				//未关注,添加关注
 				await addFollow(this.article.aut_id);
 				this.$toast("已关注");
@@ -100,19 +114,44 @@ export default {
 		},
 		//收藏文章
 		async onCollect() {
+			//禁止背景点击
+			this.$toast.loading({
+				forbidClick: true,
+				message: "加载中...",
+			});
 			this.isCollectLoading = true;
 			if (this.article.is_collected) {
 				//已收藏，取消收藏
 				await deleteCollect(this.articleId);
-				this.$toast.success("已取消收藏");
-			}
-			else {
+			} else {
 				//未收藏,添加收藏
 				await addCollect(this.articleId);
-				this.$toast.success("已收藏");
 			}
 			this.article.is_followed = !this.article.is_followed;
 			this.isCollectLoading = true;
+			this.$toast.success(
+				`${this.article.is_collected ? "取消" : ""}收藏成功`,
+			);
+		},
+		//点赞
+		async onLike() {
+			//禁止背景点击
+			this.$toast.loading({
+				forbidClick: true,
+				message: "加载中...",
+			});
+			if (this.article.attitude === 1) {
+				//已点赞，取消点赞
+				await deleteLike(this.articleId);
+				this.article.attitude = -1;
+			} else {
+				//未点赞,添加点赞
+				await addLike(this.articleId);
+				this.article.attitude = 1;
+			}
+			this.$toast.success(
+				`${this.article.attitude === 1 ? "" : "取消"}点赞成功`,
+			);
 		},
 
 		//文章详情z
@@ -145,10 +184,10 @@ export default {
 			imgs.forEach((img, index) => {
 				//每循环一次将src添加到数组
 				imgPaths.push(img.src);
-				img.onclick = function() {
+				img.onclick = function () {
 					ImagePreview({
-						images       : imgPaths,
-						startPosition: index
+						images: imgPaths,
+						startPosition: index,
 					});
 				};
 			});
@@ -159,7 +198,7 @@ export default {
 				"https://img01.yzcdn.cn/vant/cat.jpeg",
 				"https://img01.yzcdn.cn/vant/logo.png",
 				"https://static.wikia.nocookie.net/fcs-vs-battle/images/3/35/ASDFGuy_Vector.png/revision/latest?cb=20201113171318",
-				"https://www.aplpackaging.co.uk/wp-content/uploads/2019/12/mailingbox-brown-310x240x114-000-300x300.jpg"
+				"https://www.aplpackaging.co.uk/wp-content/uploads/2019/12/mailingbox-brown-310x240x114-000-300x300.jpg",
 			];
 			let randomIndex = Math.floor(Math.random() * photos.length);
 			this.article.aut_photo = photos[randomIndex];
@@ -169,22 +208,31 @@ export default {
 		replaceContentImg() {
 			this.article.content = this.article.content.replace(
 				/\/\/upload-images.*?['"]/g,
-				"https://img01.yzcdn.cn/vant/cat.jpeg"
+				"https://img01.yzcdn.cn/vant/cat.jpeg",
 			);
 			this.article.content = this.article.content.replace(
 				/src=".*?['"]/g,
-				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
+				'src="https://img01.yzcdn.cn/vant/cat.jpeg"',
 			);
 			this.article.content = this.article.content.replace(
 				/data-original-src=".*?['"]/g,
-				"src=\"https://img01.yzcdn.cn/vant/cat.jpeg\""
+				'src="https://img01.yzcdn.cn/vant/cat.jpeg"',
 			);
-		}
-	}
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
+//文章详情
+.article-wrap {
+	position: fixed;
+	top: 46px;
+	bottom: 50px;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
 .markdown-body {
 	padding: 14px;
 	background-color: #fff;

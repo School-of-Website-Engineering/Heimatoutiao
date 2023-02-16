@@ -132,3 +132,20 @@ export const deleteCollect = (target) => {
 		url   : `/app/v1_0/article/collections/${target}`
 	});
 }
+
+//点赞文章
+export const addLike = (target) => {
+	return request({
+		method: "POST",
+		url   : "/app/v1_0/article/likings",
+		data  : { target }
+	});
+}
+
+//取消点赞文章
+export const deleteLike = (target) => {
+	return request({
+		method: "DELETE",
+		url   : `/app/v1_0/article/likings/${target}`
+	});
+}
