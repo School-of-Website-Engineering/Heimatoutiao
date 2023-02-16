@@ -76,7 +76,9 @@
 			></post-comment>
 		</van-popup>
 		<!-- 评论恢复 -->
-		<van-popup v-model="showReply" position="bottom"> </van-popup>
+		<van-popup v-model="showReply" position="bottom">
+			<CommentReply :comment="replyComment"></CommentReply>
+		</van-popup>
 	</div>
 </template>
 
@@ -111,7 +113,9 @@ export default {
 			//评论总数
 			totalCommentCount: 0,
 			//显示回复评论的弹出层
-			showReply        : false
+			showReply        : false,
+			//回复评论的数据对象
+			replyComment     : {}
 		};
 	},
 	// eslint-disable-next-line vue/no-unused-components
@@ -258,6 +262,9 @@ export default {
 				message    : "发布中...",
 				forbidClick: true
 			});
+			this.replyComment = comment;
+			console.log("评论成功");
+			console.log(this.replyComment);
 			//更新评论总数量
 			this.totalCommentCount++;
 			this.$toast.success("评论成功");
