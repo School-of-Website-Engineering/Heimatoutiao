@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.3.0...v1.3.1) (2023-02-16)
+
+
+### update
+
+* 更新评论 ([ae81fff](https://github.com/School-of-Website-Engineering/Heimatoutiao/commit/ae81fff180cf83a8072a3f08527f13fc2df05cd5))
+
 ## [1.3.0](https://github.com/School-of-Website-Engineering/Heimatoutiao/compare/v1.2.0...v1.3.0) (2023-02-13)
 
 
