@@ -12,7 +12,7 @@
 			class="on-post"
 			type="primary"
 			@click="onPost"
-			disabled="message.length === 0"
+			:disabled="message === message.trim() && message.length === 0"
 			>发布</van-button
 		>
 	</div>

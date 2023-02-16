@@ -20,34 +20,35 @@
 import { getComments } from "@/api";
 import CommentItem from "@/views/article/components/comment-item.vue";
 export default {
-	name      : "CommentList",
-	components: {CommentItem},
-	props     : {
+	name: "CommentList",
+	components: { CommentItem },
+	props: {
 		source: {
-			type    : [String, Number, Object],
-			required: true
-		}
+			type: [String, Number, Object],
+			required: true,
+		},
 	},
 	data() {
 		return {
-			loading : false,
+			loading: false,
 			finished: false,
 			// 下一页页码
-			offset  : null,
+			offset: null,
 			//每页条数
-			limit   : 10,
-			list    : []
+			limit: 10,
+			list: [],
 		};
 	},
 	methods: {
 		async onLoad() {
 			// 1.请求数据
 			const { data } = await getComments({
-				type  : "a",
+				type: "a",
 				source: this.source,
 				offset: this.offset,
-				limit : this.limit
+				limit: this.limit,
 			});
+			this.$emit("update-total-count", data.total_count);
 			console.log(data);
 			//2.把数据添加到list中
 			const { results } = data;
@@ -58,12 +59,11 @@ export default {
 			if (results.length) {
 				//获取下一页数据条码
 				this.offset = data.last_id;
-			}
-			else {
+			} else {
 				this.finished = true;
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
