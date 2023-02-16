@@ -28,7 +28,11 @@
 			v-model="showEditNameShow"
 			position="bottom"
 			:style="{ height: '100%' }"
-			><update-name @close="showEditNameShow = false"></update-name
+			><update-name
+				:name="userProfile.name"
+				@close="showEditNameShow = false"
+        @update-name="userProfile.name = $event"
+			></update-name
 		></van-popup>
 	</div>
 </template>

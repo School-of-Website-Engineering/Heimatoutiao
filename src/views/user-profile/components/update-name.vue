@@ -11,23 +11,50 @@
 		/>
 		<!--  输入框  -->
 		<van-field
-			v-model="message"
+			v-model="localName"
 			rows="2"
 			type="textarea"
-			maxlength="50"
-			placeholder="请输入留言"
+			maxlength="7"
+			placeholder="请输入昵称"
 			show-word-limit
 		/>
 	</div>
 </template>
 
 <script>
+import { updateUserProfile } from "@/api";
 export default {
-	name: "UpdateName",
-	data() {
-		return {message: ""};
+	name : "UpdateName",
+	props: {
+		name: {
+			type    : String,
+			required: true
+		}
 	},
-	methods: {onClickRight() {}}
+	data() {
+		return { localName: this.name };
+	},
+	methods: {
+		async onClickRight() {
+			this.$toast.loading({
+				message    : "保存中...",
+				forbidClick: true
+			});
+			try {
+				await updateUserProfile({ name: this.localName });
+				//保存成功
+				this.$toast.success("保存成功");
+        this.$emit("update-name", this.localName);
+				//关闭弹出层
+				this.$emit("close");
+			}
+			catch (error) {
+				if (error && error.response && error.response.status === 409) {
+					this.$toast.fail("昵称已存在");
+				}
+			}
+		}
+	}
 };
 </script>
 
