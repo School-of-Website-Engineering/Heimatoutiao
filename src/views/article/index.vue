@@ -38,7 +38,12 @@
 		</div>
 		<!-- 底部区域 -->
 		<div class="article-bottom">
-			<van-button class="comment-btn" type="default" round size="small"
+			<van-button
+				class="comment-btn"
+				type="default"
+				round
+				size="small"
+				@click="showPost = true"
 				>写评论</van-button
 			>
 			<van-icon name="comment-o" info="123" color="#777"></van-icon>
@@ -54,12 +59,20 @@
 			></van-icon>
 			<van-icon name="share" color="#777"></van-icon>
 		</div>
+		<!-- 发布评论 -->
+		<van-popup v-model="showPost" position="bottom">
+			<post-comment
+				:articleId="articleId"
+				:target="articleId"
+			></post-comment>
+		</van-popup>
 	</div>
 </template>
 
 <script>
 import "./github-markdown-light.css";
 import CommentList from "./components/comment-list.vue";
+import PostComment from "./components/post-comment.vue";
 import {
 	getArticle,
 	addFollow,
@@ -80,10 +93,12 @@ export default {
 			//关注用户的按钮
 			isFollowLoading : false,
 			//收藏文章的按钮
-			isCollectLoading: false
+			isCollectLoading: false,
+			//显示发布评论的弹出层
+			showPost        : false
 		};
 	},
-	components: { CommentList },
+	components: { CommentList, PostComment },
 	created() {
 		this.loadArticle();
 		console.log("--------------原始content↓------------------");
