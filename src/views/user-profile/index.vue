@@ -29,9 +29,9 @@
 			position="bottom"
 			:style="{ height: '100%' }"
 			><update-name
-				:name="userProfile.name"
+				v-model="userProfile.name"
 				@close="showEditNameShow = false"
-        @update-name="userProfile.name = $event"
+				@update-name="userProfile.name = $event"
 			></update-name
 		></van-popup>
 	</div>
