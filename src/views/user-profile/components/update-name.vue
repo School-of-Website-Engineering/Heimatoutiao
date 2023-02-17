@@ -26,7 +26,7 @@ import { updateUserProfile } from "@/api";
 export default {
 	name : "UpdateName",
 	props: {
-		name: {
+		value: {
 			type    : String,
 			required: true
 		}
@@ -44,7 +44,7 @@ export default {
 				await updateUserProfile({ name: this.localName });
 				//保存成功
 				this.$toast.success("保存成功");
-        this.$emit("update-name", this.localName);
+				this.$emit("input", this.localName);
 				//关闭弹出层
 				this.$emit("close");
 			}
