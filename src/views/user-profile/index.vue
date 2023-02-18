@@ -31,7 +31,6 @@
 			><update-name
 				v-model="userProfile.name"
 				@close="showEditNameShow = false"
-				@update-name="userProfile.name = $event"
 			></update-name
 		></van-popup>
 	</div>
