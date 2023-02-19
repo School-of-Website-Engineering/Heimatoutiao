@@ -1,47 +1,42 @@
 <template>
 	<div>
-		<!-- 导航栏 -->
-		<van-nav-bar
-			class="nav-bar-vant"
-			title="修改昵称"
-			left-text="取消"
-			right-text="完成"
-			@click-left="$emit('close')"
-			@click-right="onClickRight"
-		/>
-		<!--  输入框  -->
-		<van-field
-			v-model="localName"
-			rows="2"
-			type="textarea"
-			maxlength="7"
-			placeholder="请输入昵称"
-			show-word-limit
+		<van-picker
+			show-toolbar
+			:columns="columns"
+			@cancel="$emit('close')"
+			@confirm="onConfirm"
+			:default-index="defaultIndex"
 		/>
 	</div>
 </template>
 
 <script>
-import { updateUserProfile } from "@/api";
+import {  updateUserProfile } from "@/api";
 export default {
-	name : "UpdateName",
+	name: "UpdateName",
+	data() {
+		return {
+			value       : "",
+			showPicker  : false,
+			columns     : ["男", "女"],
+			defaultIndex: this.value
+		};
+	},
 	props: {
+		// eslint-disable-next-line vue/no-dupe-keys
 		value: {
-			type    : String,
+			type    : Number,
 			required: true
 		}
 	},
-	data() {
-		return { localName: this.name };
-	},
 	methods: {
-		async onClickRight() {
+		async onConfirm() {
 			this.$toast.loading({
 				message    : "保存中...",
 				forbidClick: true
 			});
 			try {
-				await updateUserProfile({ name: this.localName });
+				await updateUserProfile({ gender: this.localName });
 				//保存成功
 				this.$toast.success("保存成功");
 				this.$emit("input", this.localName);
