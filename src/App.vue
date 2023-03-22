@@ -1,7 +1,10 @@
 <template>
 	<div class="root">
 		<!-- 路由出口 -->
-		<router-view></router-view>
+		<!--添加组件缓存-->
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
 	</div>
 </template>
 

@@ -15,10 +15,13 @@
 [LiveDemo]()
 
 ---
+## 项目简介
+Heimatoutiao 是一个基于 Vue 的新闻资讯类 Web 应用。
 
 ## 内容列表
 
 - [Heimatoutiao](#heimatoutiao)
+  - [项目简介](#项目简介)
   - [内容列表](#内容列表)
 - [Git 规范](#git-规范)
   - [Git 分支命名](#git-分支命名)
