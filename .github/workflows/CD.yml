@@ -30,7 +30,7 @@ jobs:
 
       # 执行JamesIves/github-pages-deploy-action将项目发布到Github Pages
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           # 该workflow需要操作repo，因此需要一个密钥，下面会讲到如何获取这个密钥
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
